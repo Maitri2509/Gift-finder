@@ -2,21 +2,27 @@
 <html>
 <head>
     <title>GiftFinder - Find Your Gift</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
 <header>
+
     <div class="logo">🎁 GiftFinder</div>
 
     <nav>
         <a href="index.html">Home</a>
         <a href="form.html">Find Gift</a>
-        <a href="index.html#categories">Categories</a>
-        <a href="index.html#how">How It Works</a>
-        <a href="index.html#about">About</a>
+        <a href="categories.html">Categories</a>
+        <a href="gifts.html">Gift Ideas</a>
+        <a href="surprise.html">Surprise Me</a>
+        <a href="location.html">Find Stores</a>
+        <a href="how.html">How It Works</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
     </nav>
+
 </header>
 
 <section class="form-page">
@@ -32,7 +38,7 @@
             that feels truly personal.
         </p>
 
-        <form>
+        <form action="gifts.html">
 
             <label>Your Name</label>
             <input type="text" placeholder="Enter your name">
@@ -42,70 +48,72 @@
 
             <label>What's the Occasion? 🎉</label>
 
-          <label>What's the Occasion? 🎉</label>
+            <div class="options">
 
-<div class="options">
+                <label><input type="radio" name="occasion"> 🎂 Birthday</label>
 
-    <label><input type="radio" name="occasion"> 🎂 Birthday</label>
+                <label><input type="radio" name="occasion"> 💍 Anniversary</label>
 
-    <label><input type="radio" name="occasion"> 💍 Anniversary</label>
+                <label><input type="radio" name="occasion"> 💒 Wedding</label>
 
-    <label><input type="radio" name="occasion"> 💒 Wedding</label>
+                <label><input type="radio" name="occasion"> 💕 Valentine's Day</label>
 
-    <label><input type="radio" name="occasion"> 💕 Valentine's Day</label>
+                <label><input type="radio" name="occasion"> 👩‍🍼 Mother's Day</label>
 
-    <label><input type="radio" name="occasion"> 👩‍🍼 Mother's Day</label>
+                <label><input type="radio" name="occasion"> 👨‍👧 Father's Day</label>
 
-    <label><input type="radio" name="occasion"> 👨‍👧 Father's Day</label>
+                <label><input type="radio" name="occasion"> 🪔 Diwali</label>
 
-    <label><input type="radio" name="occasion"> 🪔 Diwali</label>
+                <label><input type="radio" name="occasion"> 🎊 New Year</label>
 
-    <label><input type="radio" name="occasion"> 🎊 New Year</label>
+                <label><input type="radio" name="occasion"> 🏠 Housewarming</label>
 
-    <label><input type="radio" name="occasion"> 🏆 Achievement</label>
+                <label><input type="radio" name="occasion"> ✨ Other</label>
 
-</div>
+            </div>
 
- <label>Who are you gifting? ❤️</label>
+            <label>Who Are You Gifting? ❤️</label>
 
-<div class="options">
+            <div class="options">
 
-    <label><input type="radio" name="relation"> 💕 Partner</label>
+                <label><input type="radio" name="relation"> 💕 Partner</label>
 
-    <label><input type="radio" name="relation"> 💍 Spouse</label>
+                <label><input type="radio" name="relation"> 💍 Spouse</label>
 
-    <label><input type="radio" name="relation"> 👩‍❤️‍👨 Boyfriend</label>
+                <label><input type="radio" name="relation"> 👨‍❤️‍👩 Boyfriend</label>
 
-    <label><input type="radio" name="relation"> 👩‍❤️‍👩 Girlfriend</label>
+                <label><input type="radio" name="relation"> 👩‍❤️‍👨 Girlfriend</label>
 
-    <label><input type="radio" name="relation"> 👭 Best Friend</label>
+                <label><input type="radio" name="relation"> 👭 Best Friend</label>
 
-    <label><input type="radio" name="relation"> 🧑‍🤝‍🧑 Friend</label>
+                <label><input type="radio" name="relation"> 🧑‍🤝‍🧑 Friend</label>
 
-    <label><input type="radio" name="relation"> 👩 Mother</label>
+                <label><input type="radio" name="relation"> 👩 Mother</label>
 
-    <label><input type="radio" name="relation"> 👨 Father</label>
+                <label><input type="radio" name="relation"> 👨 Father</label>
 
-    <label><input type="radio" name="relation"> 👵 Grandmother</label>
+                <label><input type="radio" name="relation"> 👵 Grandparents</label>
 
-    <label><input type="radio" name="relation"> 👴 Grandfather</label>
+                <label><input type="radio" name="relation"> 👧 Sister</label>
 
-    <label><input type="radio" name="relation"> 👧 Sister</label>
+                <label><input type="radio" name="relation"> 👦 Brother</label>
 
-    <label><input type="radio" name="relation"> 👦 Brother</label>
+                <label><input type="radio" name="relation"> 👩‍🏫 Teacher</label>
 
-    <label><input type="radio" name="relation"> ✨ Other</label>
+                <label><input type="radio" name="relation"> ✨ Other</label>
 
-</div>
+            </div>
 
             <label>Their Age 🎂</label>
 
             <select>
                 <option>Select Age Group</option>
+                <option>Under 13</option>
                 <option>13–17</option>
                 <option>18–25</option>
                 <option>26–40</option>
-                <option>40+</option>
+                <option>41–60</option>
+                <option>60+</option>
             </select>
 
             <label>What's Your Budget? 💰</label>
@@ -115,7 +123,8 @@
                 <option>Under ₹500</option>
                 <option>₹500–₹1000</option>
                 <option>₹1000–₹2500</option>
-                <option>₹2500+</option>
+                <option>₹2500–₹5000</option>
+                <option>₹5000+</option>
             </select>
 
             <label>What Do They Like? 🎨</label>
@@ -160,6 +169,16 @@
                 <label>
                     <input type="checkbox">
                     🎨 Art
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    🍳 Cooking
+                </label>
+
+                <label>
+                    <input type="checkbox">
+                    🌿 Nature
                 </label>
 
             </div>
@@ -252,22 +271,27 @@
 
                 <label>
                     <input type="radio" name="gift">
-                    Useful
+                    🎁 Useful
                 </label>
 
                 <label>
                     <input type="radio" name="gift">
-                    Cute
+                    🧸 Cute
                 </label>
 
                 <label>
                     <input type="radio" name="gift">
-                    Personalized
+                    💝 Personalized
                 </label>
 
                 <label>
                     <input type="radio" name="gift">
-                    Luxury
+                    💎 Luxury
+                </label>
+
+                <label>
+                    <input type="radio" name="gift">
+                    🖐️ Handmade
                 </label>
 
             </div>
@@ -291,6 +315,11 @@
                     This Week
                 </label>
 
+                <label>
+                    <input type="radio" name="time">
+                    No Rush
+                </label>
+
             </div>
 
             <label>Describe Them 💭</label>
@@ -305,9 +334,9 @@
                     Let GiftFinder surprise you with a unique gift idea.
                 </p>
 
-                <button type="button" class="surprise-button">
+                <a href="surprise.html" class="surprise-button">
                     🪄 Surprise Me!
-                </button>
+                </a>
 
             </div>
 
@@ -327,6 +356,12 @@
                 src="https://www.google.com/maps?q=gift+shops+Ahmedabad&output=embed">
             </iframe>
 
+            <br><br>
+
+            <a href="location.html" class="main-button">
+                📍 Explore More Stores
+            </a>
+
         </div>
 
     </div>
@@ -338,6 +373,20 @@
     <h3>🎁 GiftFinder</h3>
 
     <p>Find. Choose. Gift. ❤️</p>
+
+    <div class="footer-links">
+
+        <a href="index.html">Home</a>
+        <a href="form.html">Find Gift</a>
+        <a href="categories.html">Categories</a>
+        <a href="gifts.html">Gift Ideas</a>
+        <a href="surprise.html">Surprise Me</a>
+        <a href="location.html">Find Stores</a>
+        <a href="how.html">How It Works</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+
+    </div>
 
     <p>© 2026 GiftFinder</p>
 

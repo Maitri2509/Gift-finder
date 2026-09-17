@@ -4,101 +4,115 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
-    color: #333;
-    background-color: #fff;
+    color: #33283d;
+    background-color: #ffffff;
     line-height: 1.6;
 }
 
 header {
-    background-color: white;
-    padding: 20px 7%;
+    background-color: #ffffff;
+    padding: 18px 7%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eee5f3;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .logo {
-    font-size: 25px;
+    font-size: 26px;
     font-weight: bold;
-    color: #7b4ab5;
+    color: #713fa3;
+    white-space: nowrap;
 }
 
 nav {
     display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 nav a {
     text-decoration: none;
-    color: #555;
+    color: #51465a;
     font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
 nav a:hover {
-    color: #7b4ab5;
-}
-
-.small-title {
-    color: #d2529b;
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: 1px;
+    color: #c64f91;
 }
 
 .main-button {
     display: inline-block;
-    padding: 13px 25px;
-    background-color: #7b4ab5;
+    padding: 14px 28px;
+    background-color: #713fa3;
     color: white;
     text-decoration: none;
-    border-radius: 25px;
-    margin-top: 20px;
+    border-radius: 30px;
+    margin-top: 22px;
+    font-weight: bold;
+    box-shadow: 0 8px 20px #d8c6e6;
+    transition: 0.3s;
 }
 
 .main-button:hover {
-    background-color: #5f3691;
+    background-color: #582f82;
+    transform: translateY(-2px);
 }
 
+/* HOME */
+
 .intro-section {
-    min-height: 600px;
-    padding: 70px 8%;
+    min-height: 650px;
+    padding: 80px 8%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff5fa, #f4e9fb);
 }
 
 .intro-text {
-    width: 50%;
+    width: 52%;
+}
+
+.small-title {
+    color: #c64f91;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1.5px;
 }
 
 .intro-text h1 {
-    font-size: 60px;
-    line-height: 1.1;
-    margin: 15px 0;
+    font-size: 62px;
+    line-height: 1.05;
+    margin: 18px 0;
 }
 
 .intro-text h1 span {
-    color: #d2529b;
+    color: #c64f91;
 }
 
 .description {
-    color: #666;
-    max-width: 550px;
+    color: #716875;
+    max-width: 570px;
     font-size: 17px;
 }
 
 .gift-area {
     width: 45%;
-    height: 450px;
+    height: 460px;
     position: relative;
     display: flex;
     align-items: center;
@@ -106,48 +120,66 @@ nav a:hover {
 }
 
 .circle {
-    width: 330px;
-    height: 330px;
-    background-color: #ead9f5;
+    width: 350px;
+    height: 350px;
+    background: linear-gradient(135deg, #ead8f5, #f8dce9);
     border-radius: 50%;
 }
 
 .gift {
     position: absolute;
-    font-size: 150px;
+    font-size: 155px;
+    animation: floatGift 3s ease-in-out infinite;
+}
+
+@keyframes floatGift {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 }
 
 .floating-card {
     position: absolute;
     background-color: white;
-    padding: 12px 18px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px #ddd;
+    padding: 13px 19px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px #ddd4e2;
+    font-weight: bold;
 }
 
 .card-one {
-    top: 70px;
-    left: 10px;
+    top: 60px;
+    left: 0;
 }
 
 .card-two {
-    bottom: 80px;
-    right: 10px;
+    bottom: 70px;
+    right: 0;
 }
 
 .card-three {
-    top: 30px;
-    right: 20px;
+    top: 20px;
+    right: 15px;
 }
 
+/* CATEGORIES */
+
 .categories {
-    padding: 70px 7%;
+    padding: 80px 7%;
     text-align: center;
 }
 
 .categories h2 {
-    font-size: 35px;
-    margin: 10px 0 35px;
+    font-size: 38px;
+    margin: 10px 0 40px;
 }
 
 .category-cards {
@@ -158,38 +190,43 @@ nav a:hover {
 }
 
 .category-card {
-    width: 230px;
-    padding: 30px 20px;
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 15px;
+    width: 240px;
+    padding: 32px 22px;
+    background-color: white;
+    border: 1px solid #eee5f3;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px #eee8f2;
+    transition: 0.3s;
 }
 
 .category-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px #ddd1e6;
 }
 
 .category-card div {
-    font-size: 50px;
+    font-size: 52px;
 }
 
 .category-card h3 {
-    margin: 10px 0;
+    margin: 12px 0 7px;
 }
 
 .category-card p {
-    color: #777;
+    color: #77707b;
 }
 
+/* UNIQUE */
+
 .unique-section {
-    padding: 70px 7%;
+    padding: 80px 7%;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #faf0ff, #fff1f7);
 }
 
 .unique-section h2 {
-    font-size: 35px;
-    margin: 10px 0 35px;
+    font-size: 38px;
+    margin: 10px 0 40px;
 }
 
 .unique-cards {
@@ -200,32 +237,40 @@ nav a:hover {
 }
 
 .unique-card {
-    width: 240px;
-    padding: 30px 20px;
+    width: 245px;
+    padding: 32px 22px;
     background-color: white;
-    border-radius: 15px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px #eadfea;
+    transition: 0.3s;
+}
+
+.unique-card:hover {
+    transform: translateY(-8px);
 }
 
 .unique-card div {
-    font-size: 45px;
+    font-size: 48px;
 }
 
 .unique-card h3 {
-    margin: 10px 0;
+    margin: 12px 0 7px;
 }
 
 .unique-card p {
-    color: #777;
+    color: #77707b;
 }
 
+/* HOW IT WORKS */
+
 .how-section {
-    padding: 70px 7%;
+    padding: 80px 7%;
     text-align: center;
 }
 
 .how-section h2 {
-    font-size: 35px;
-    margin: 10px 0 35px;
+    font-size: 38px;
+    margin: 10px 0 40px;
 }
 
 .steps {
@@ -236,44 +281,56 @@ nav a:hover {
 }
 
 .step {
-    width: 270px;
+    width: 280px;
     padding: 30px 20px;
 }
 
 .step div {
-    font-size: 45px;
-    color: #7b4ab5;
+    width: 65px;
+    height: 65px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0e2f8;
+    color: #713fa3;
+    border-radius: 50%;
+    font-size: 25px;
+    font-weight: bold;
 }
 
 .step h3 {
-    margin: 10px 0;
+    margin: 15px 0 8px;
 }
 
 .step p {
-    color: #777;
+    color: #77707b;
 }
 
+/* LOCATION */
+
 .location-section {
-    padding: 70px 7%;
+    padding: 80px 7%;
     text-align: center;
-    background-color: #f7eafa;
+    background-color: #faf4fd;
 }
 
 .location-section h2 {
-    font-size: 35px;
+    font-size: 38px;
     margin: 10px 0;
 }
 
 .location-section > p {
-    color: #777;
+    color: #77707b;
 }
 
 .map {
     width: 100%;
     height: 400px;
-    margin-top: 30px;
-    border-radius: 15px;
+    margin-top: 35px;
+    border-radius: 20px;
     overflow: hidden;
+    box-shadow: 0 10px 30px #ddd5e2;
 }
 
 .map iframe {
@@ -282,49 +339,66 @@ nav a:hover {
     border: none;
 }
 
+/* ABOUT */
+
 .about-section {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
 }
 
 .about-section h2 {
-    font-size: 35px;
+    font-size: 38px;
     margin: 10px 0 15px;
 }
 
 .about-section p {
-    max-width: 700px;
+    max-width: 720px;
     margin: auto;
-    color: #777;
+    color: #77707b;
 }
 
-.final-section {
+/* CTA */
+
+.cta {
+    min-height: 300px;
     padding: 70px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #f8eaff, #fff0f7);
 }
 
-.final-section h2 {
+.cta h2 {
     font-size: 35px;
+    margin-bottom: 10px;
 }
 
-.final-section p {
-    color: #777;
+.cta p {
+    color: #77707b;
+    margin-bottom: 20px;
+}
+
+.cta .main-button {
     margin-top: 10px;
 }
 
+/* FORM PAGE */
+
 .form-page {
-    padding: 60px 20px;
-    background-color: #f7eafa;
+    padding: 70px 20px;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .form-container {
-    width: 750px;
+    width: 800px;
     max-width: 95%;
     margin: auto;
-    padding: 40px;
+    padding: 45px;
     background-color: white;
-    border-radius: 18px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px #dfd3e5;
 }
 
 .form-container > .small-title,
@@ -334,19 +408,19 @@ nav a:hover {
 }
 
 .form-container h1 {
-    font-size: 40px;
+    font-size: 42px;
     margin: 10px 0;
 }
 
 .form-intro {
-    color: #777;
-    margin-bottom: 30px;
+    color: #77707b;
+    margin-bottom: 35px;
 }
 
 form label {
     display: block;
-    margin-top: 18px;
-    margin-bottom: 7px;
+    margin-top: 20px;
+    margin-bottom: 8px;
     font-weight: bold;
 }
 
@@ -355,15 +429,24 @@ form input[type="email"],
 form select,
 form textarea {
     width: 100%;
-    padding: 13px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 14px;
+    border: 1px solid #ddd2e4;
+    border-radius: 10px;
     font-size: 15px;
+    background-color: #ffffff;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: #a66acb;
 }
 
 form textarea {
-    height: 130px;
-    resize: none;
+    height: 140px;
+    resize: vertical;
 }
 
 .options {
@@ -374,11 +457,18 @@ form textarea {
 
 .options label {
     margin: 0;
-    padding: 9px 13px;
-    background-color: #faf5fc;
-    border: 1px solid #ead9f5;
-    border-radius: 20px;
+    padding: 10px 14px;
+    background-color: #fbf6fd;
+    border: 1px solid #e7d9ed;
+    border-radius: 25px;
     font-weight: normal;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.options label:hover {
+    background-color: #f3e5fa;
+    border-color: #c69bdd;
 }
 
 .options input {
@@ -386,27 +476,34 @@ form textarea {
 }
 
 .find-button {
+    display: block;
     width: 100%;
-    padding: 14px;
-    margin-top: 25px;
-    border: none;
-    border-radius: 25px;
-    background-color: #7b4ab5;
+    padding: 16px;
+    margin-top: 30px;
+    background-color: #713fa3;
     color: white;
-    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    font-size: 17px;
+    font-weight: bold;
     cursor: pointer;
+    box-shadow: 0 8px 20px #d9c8e5;
+    transition: 0.3s;
 }
 
 .find-button:hover {
-    background-color: #5f3691;
+    background-color: #582f82;
+    transform: translateY(-2px);
 }
 
+/* SURPRISE BOX */
+
 .surprise-box {
-    margin-top: 30px;
-    padding: 25px;
+    margin-top: 35px;
+    padding: 30px;
     text-align: center;
-    background-color: #fff0f7;
-    border-radius: 15px;
+    background: linear-gradient(135deg, #fff0f7, #f5eaff);
+    border-radius: 20px;
 }
 
 .surprise-box h2 {
@@ -414,21 +511,28 @@ form textarea {
 }
 
 .surprise-box p {
-    color: #777;
+    color: #77707b;
 }
 
 .surprise-button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 11px 22px;
     margin-top: 15px;
-    background-color: #d2529b;
+    background-color: #c64f91;
     color: white;
     text-decoration: none;
-    border-radius: 20px;
+    border-radius: 25px;
+    font-weight: bold;
 }
 
+.surprise-button:hover {
+    background-color: #a83d77;
+}
+
+/* FORM MAP */
+
 .map-section {
-    margin-top: 40px;
+    margin-top: 45px;
     text-align: center;
 }
 
@@ -437,7 +541,7 @@ form textarea {
 }
 
 .map-section p {
-    color: #777;
+    color: #77707b;
 }
 
 .map-section iframe {
@@ -445,174 +549,171 @@ form textarea {
     height: 350px;
     border: none;
     margin-top: 20px;
-    border-radius: 15px;
+    border-radius: 18px;
 }
 
+/* COMMON PAGE TITLE */
+
 .page-title {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .page-title h1 {
-    font-size: 45px;
+    font-size: 48px;
     margin: 10px 0;
 }
 
 .page-title p {
-    color: #777;
+    color: #77707b;
 }
 
+/* CATEGORY PAGE */
+
 .category-page {
-    padding: 60px 7%;
+    padding: 70px 7%;
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 28px;
     flex-wrap: wrap;
 }
 
 .big-category {
-    width: 260px;
-    padding: 30px 20px;
+    width: 270px;
+    padding: 32px 22px;
     text-align: center;
     background-color: white;
-    border: 1px solid #eee;
-    border-radius: 15px;
+    border: 1px solid #eee5f3;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px #eee8f2;
+    transition: 0.3s;
 }
 
 .big-category:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
 }
 
 .big-category > div {
-    font-size: 55px;
+    font-size: 58px;
 }
 
 .big-category h2 {
-    margin: 10px 0;
+    margin: 12px 0;
 }
 
 .big-category p {
-    color: #777;
-    margin-bottom: 15px;
+    color: #77707b;
+    margin-bottom: 18px;
 }
 
 .outline-button {
     display: inline-block;
-    padding: 9px 20px;
-    border: 1px solid #7b4ab5;
-    color: #7b4ab5;
+    padding: 10px 21px;
+    border: 1px solid #713fa3;
+    color: #713fa3;
     text-decoration: none;
-    border-radius: 20px;
+    border-radius: 25px;
+    font-weight: bold;
 }
 
 .outline-button:hover {
-    background-color: #7b4ab5;
+    background-color: #713fa3;
     color: white;
 }
 
-.cta {
-    padding: 60px 20px;
-    text-align: center;
-    background-color: #f7eafa;
-}
-
-.cta h2 {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-.cta p {
-    color: #777;
-    margin-bottom: 20px;
-}
+/* GIFT PAGE */
 
 .gift-page {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .gift-page h1 {
-    font-size: 45px;
+    font-size: 48px;
     margin: 10px 0;
 }
 
 .gift-intro {
-    color: #777;
+    color: #77707b;
     font-size: 17px;
 }
 
 .gift-category-section {
-    padding: 60px 7%;
+    padding: 70px 7%;
 }
 
 .category-heading {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
 .category-heading span {
-    font-size: 45px;
+    font-size: 48px;
 }
 
 .category-heading h2 {
-    font-size: 32px;
+    font-size: 34px;
     margin: 8px 0;
 }
 
 .category-heading p {
-    color: #777;
+    color: #77707b;
 }
 
 .gift-results {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 28px;
     flex-wrap: wrap;
 }
 
 .gift-box {
-    width: 270px;
-    padding: 18px;
+    width: 280px;
+    padding: 20px;
     background-color: white;
-    border-radius: 15px;
-    border: 1px solid #eee;
+    border-radius: 20px;
+    border: 1px solid #eee5f3;
+    box-shadow: 0 8px 25px #eee8f2;
     text-align: center;
+    transition: 0.3s;
 }
 
 .gift-box:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px #ddd1e6;
 }
 
 .gift-photo {
-    height: 170px;
-    background-color: #f7eafa;
-    border-radius: 12px;
+    height: 180px;
+    background: linear-gradient(135deg, #f5eaff, #fff0f7);
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 75px;
-    margin-bottom: 15px;
+    font-size: 80px;
+    margin-bottom: 18px;
 }
 
 .match {
     display: inline-block;
-    padding: 7px 12px;
+    padding: 7px 13px;
     background-color: #fff0f7;
-    color: #d2529b;
+    color: #c64f91;
     border-radius: 20px;
     font-size: 13px;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .gift-box h2 {
-    font-size: 20px;
+    font-size: 21px;
     margin: 8px 0;
 }
 
 .gift-box p {
-    color: #777;
+    color: #77707b;
     line-height: 1.5;
     min-height: 45px;
 }
@@ -622,177 +723,185 @@ form textarea {
 }
 
 .gift-box h3 {
-    color: #7b4ab5;
+    color: #713fa3;
     font-size: 21px;
     margin-bottom: 15px;
 }
 
 .gift-button {
     display: inline-block;
-    padding: 10px 22px;
-    background-color: #7b4ab5;
+    padding: 10px 23px;
+    background-color: #713fa3;
     color: white;
     text-decoration: none;
-    border-radius: 20px;
+    border-radius: 25px;
+    font-weight: bold;
 }
 
 .gift-button:hover {
-    background-color: #5f3691;
+    background-color: #582f82;
 }
 
 .gift-actions {
-    padding: 60px 20px;
+    padding: 70px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background-color: #faf4fd;
 }
 
 .gift-actions h2 {
-    font-size: 32px;
+    font-size: 34px;
     margin-bottom: 10px;
 }
 
 .gift-actions p {
-    color: #777;
+    color: #77707b;
     margin-bottom: 20px;
 }
 
 .surprise-link {
     display: inline-block;
     margin-left: 15px;
-    color: #7b4ab5;
+    color: #713fa3;
     text-decoration: none;
     font-weight: bold;
 }
 
+/* SURPRISE PAGE */
+
 .surprise-page {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .surprise-page h1 {
-    font-size: 48px;
+    font-size: 50px;
     margin: 10px 0;
 }
 
 .surprise-intro {
-    color: #777;
+    color: #77707b;
     font-size: 17px;
 }
 
 .surprise-content {
-    padding: 60px 7%;
+    padding: 70px 7%;
 }
 
 .surprise-message {
-    width: 650px;
+    width: 680px;
     max-width: 90%;
-    margin: 0 auto 45px;
-    padding: 30px;
+    margin: 0 auto 50px;
+    padding: 35px;
     text-align: center;
-    background-color: #fff0f7;
-    border-radius: 18px;
+    background: linear-gradient(135deg, #fff0f7, #f5eaff);
+    border-radius: 22px;
+    box-shadow: 0 10px 30px #eadfea;
 }
 
 .magic-icon {
-    font-size: 50px;
+    font-size: 55px;
 }
 
 .surprise-message h2 {
-    margin: 10px 0;
+    margin: 12px 0;
 }
 
 .surprise-message p {
-    color: #777;
+    color: #77707b;
     line-height: 1.6;
 }
 
 .surprise-cards {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 28px;
     flex-wrap: wrap;
 }
 
 .surprise-card {
-    width: 270px;
-    padding: 18px;
+    width: 280px;
+    padding: 20px;
     background-color: white;
-    border-radius: 15px;
-    border: 1px solid #eee;
+    border-radius: 20px;
+    border: 1px solid #eee5f3;
+    box-shadow: 0 8px 25px #eee8f2;
     text-align: center;
+    transition: 0.3s;
 }
 
 .surprise-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
 }
 
 .surprise-image {
-    height: 170px;
-    background-color: #f7eafa;
-    border-radius: 12px;
+    height: 180px;
+    background: linear-gradient(135deg, #f5eaff, #fff0f7);
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 75px;
-    margin-bottom: 15px;
+    font-size: 80px;
+    margin-bottom: 18px;
 }
 
 .surprise-card span {
     display: inline-block;
     padding: 6px 12px;
     background-color: #fff0f7;
-    color: #d2529b;
+    color: #c64f91;
     border-radius: 20px;
     font-size: 13px;
 }
 
 .surprise-card h2 {
-    font-size: 20px;
+    font-size: 21px;
     margin: 12px 0;
 }
 
 .surprise-card p {
-    color: #777;
+    color: #77707b;
     line-height: 1.5;
     min-height: 65px;
 }
 
 .surprise-card h3 {
-    color: #7b4ab5;
+    color: #713fa3;
     font-size: 21px;
     margin: 15px 0;
 }
 
 .surprise-cta {
-    padding: 65px 20px;
+    padding: 70px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background-color: #faf4fd;
 }
 
 .surprise-cta h2 {
-    font-size: 32px;
+    font-size: 34px;
     margin: 10px 0;
 }
 
 .surprise-cta p {
-    color: #777;
+    color: #77707b;
     margin-bottom: 25px;
 }
 
+/* LOCATION PAGE */
+
 .location-page {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .location-page h1 {
-    font-size: 45px;
+    font-size: 48px;
     margin: 10px 0;
 }
 
 .location-page p {
-    color: #777;
+    color: #77707b;
 }
 
 .location-search {
@@ -802,7 +911,7 @@ form textarea {
 .location-search input {
     width: 350px;
     padding: 14px;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd2e4;
     border-radius: 25px;
     font-size: 15px;
 }
@@ -812,17 +921,18 @@ form textarea {
     margin-left: 8px;
     border: none;
     border-radius: 25px;
-    background-color: #7b4ab5;
+    background-color: #713fa3;
     color: white;
     cursor: pointer;
 }
 
 .large-map {
-    margin-top: 30px;
+    margin-top: 35px;
     width: 100%;
     height: 450px;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
+    box-shadow: 0 10px 30px #ddd5e2;
 }
 
 .large-map iframe {
@@ -832,33 +942,35 @@ form textarea {
 }
 
 .store-section {
-    padding: 60px 7%;
+    padding: 70px 7%;
     text-align: center;
     background-color: #fafafa;
 }
 
 .store-section h2 {
-    font-size: 32px;
+    font-size: 34px;
     margin-bottom: 30px;
 }
 
 .store-cards {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 28px;
     flex-wrap: wrap;
 }
 
 .store-card {
-    width: 250px;
-    padding: 25px;
+    width: 260px;
+    padding: 28px;
     background-color: white;
-    border: 1px solid #eee;
-    border-radius: 15px;
+    border: 1px solid #eee5f3;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px #eee8f2;
+    transition: 0.3s;
 }
 
 .store-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
 }
 
 .store-icon {
@@ -872,94 +984,98 @@ form textarea {
 }
 
 .store-card p {
-    color: #777;
+    color: #77707b;
 }
 
 .store-button {
     display: inline-block;
     margin-top: 12px;
     padding: 10px 20px;
-    background-color: #7b4ab5;
+    background-color: #713fa3;
     color: white;
     text-decoration: none;
     border-radius: 20px;
 }
 
 .location-tip {
-    width: 650px;
+    width: 680px;
     max-width: 90%;
     margin: 60px auto;
-    padding: 30px;
+    padding: 35px;
     text-align: center;
-    background-color: #fff0f7;
-    border-radius: 15px;
+    background: linear-gradient(135deg, #fff0f7, #f5eaff);
+    border-radius: 20px;
 }
 
 .location-tip div {
-    font-size: 40px;
+    font-size: 45px;
 }
 
 .location-tip p {
-    color: #777;
+    color: #77707b;
 }
 
 .location-cta {
-    padding: 60px 20px;
+    padding: 70px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background-color: #faf4fd;
 }
 
 .location-cta h2 {
-    font-size: 32px;
+    font-size: 34px;
 }
 
 .location-cta p {
-    color: #777;
+    color: #77707b;
     margin-bottom: 25px;
 }
 
+/* HOW PAGE */
+
 .how-page {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .how-page h1 {
-    font-size: 45px;
+    font-size: 48px;
     margin: 10px 0;
 }
 
 .how-page p {
-    color: #777;
+    color: #77707b;
 }
 
 .how-content {
-    width: 800px;
+    width: 850px;
     max-width: 90%;
-    margin: 60px auto;
+    margin: 70px auto;
 }
 
 .how-step {
     display: flex;
     align-items: center;
     gap: 25px;
-    padding: 25px;
-    margin-bottom: 20px;
+    padding: 28px;
+    margin-bottom: 22px;
     background-color: white;
-    border: 1px solid #eee;
-    border-radius: 15px;
+    border: 1px solid #eee5f3;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px #eee8f2;
 }
 
 .how-number {
-    min-width: 60px;
-    height: 60px;
+    min-width: 65px;
+    height: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #7b4ab5;
+    background-color: #713fa3;
     color: white;
     border-radius: 50%;
     font-size: 25px;
+    font-weight: bold;
 }
 
 .how-step h2 {
@@ -967,18 +1083,18 @@ form textarea {
 }
 
 .how-step p {
-    color: #777;
+    color: #77707b;
     line-height: 1.5;
 }
 
 .how-extra {
-    padding: 60px 7%;
+    padding: 70px 7%;
     text-align: center;
-    background-color: #f7eafa;
+    background-color: #faf4fd;
 }
 
 .how-extra h2 {
-    font-size: 32px;
+    font-size: 34px;
     margin-bottom: 30px;
 }
 
@@ -990,14 +1106,20 @@ form textarea {
 }
 
 .benefit-card {
-    width: 220px;
-    padding: 25px;
+    width: 230px;
+    padding: 28px;
     background-color: white;
-    border-radius: 15px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px #eee8f2;
+    transition: 0.3s;
+}
+
+.benefit-card:hover {
+    transform: translateY(-6px);
 }
 
 .benefit-card div {
-    font-size: 40px;
+    font-size: 42px;
 }
 
 .benefit-card h3 {
@@ -1005,39 +1127,43 @@ form textarea {
 }
 
 .benefit-card p {
-    color: #777;
+    color: #77707b;
 }
 
+/* HOW CTA */
+
 .how-cta {
-    padding: 60px 20px;
+    padding: 70px 20px;
     text-align: center;
 }
 
 .how-cta h2 {
-    font-size: 32px;
+    font-size: 34px;
 }
 
 .how-cta p {
-    color: #777;
+    color: #77707b;
     margin: 10px 0 25px;
 }
 
+/* ABOUT PAGE */
+
 .about-page {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .about-page h1 {
-    font-size: 45px;
+    font-size: 48px;
     margin: 10px 0 20px;
 }
 
 .about-page p {
-    width: 700px;
+    width: 720px;
     max-width: 90%;
     margin: auto;
-    color: #777;
+    color: #77707b;
     line-height: 1.6;
 }
 
@@ -1045,21 +1171,22 @@ form textarea {
     display: flex;
     justify-content: center;
     gap: 30px;
-    padding: 60px 7%;
+    padding: 70px 7%;
     flex-wrap: wrap;
 }
 
 .about-box {
     width: 450px;
-    padding: 35px;
+    padding: 38px;
     background-color: white;
-    border: 1px solid #eee;
-    border-radius: 15px;
+    border: 1px solid #eee5f3;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px #eee8f2;
     text-align: center;
 }
 
 .about-icon {
-    font-size: 55px;
+    font-size: 58px;
     margin-bottom: 15px;
 }
 
@@ -1068,19 +1195,19 @@ form textarea {
 }
 
 .about-box p {
-    color: #777;
+    color: #77707b;
     line-height: 1.6;
     margin-bottom: 12px;
 }
 
 .about-values {
-    padding: 60px 7%;
+    padding: 70px 7%;
     text-align: center;
-    background-color: #f7eafa;
+    background-color: #faf4fd;
 }
 
 .about-values h2 {
-    font-size: 32px;
+    font-size: 34px;
     margin-bottom: 30px;
 }
 
@@ -1092,14 +1219,20 @@ form textarea {
 }
 
 .value-card {
-    width: 220px;
-    padding: 25px;
+    width: 230px;
+    padding: 28px;
     background-color: white;
-    border-radius: 15px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px #eee8f2;
+    transition: 0.3s;
+}
+
+.value-card:hover {
+    transform: translateY(-6px);
 }
 
 .value-card div {
-    font-size: 40px;
+    font-size: 42px;
 }
 
 .value-card h3 {
@@ -1107,86 +1240,89 @@ form textarea {
 }
 
 .value-card p {
-    color: #777;
+    color: #77707b;
 }
 
 .about-mission {
-    width: 700px;
+    width: 720px;
     max-width: 90%;
-    margin: 60px auto;
+    margin: 70px auto;
     padding: 40px;
     text-align: center;
-    background-color: #fff0f7;
-    border-radius: 18px;
+    background: linear-gradient(135deg, #fff0f7, #f5eaff);
+    border-radius: 20px;
 }
 
 .about-mission h2 {
-    font-size: 30px;
+    font-size: 32px;
     margin-bottom: 15px;
 }
 
 .about-mission p {
-    color: #777;
+    color: #77707b;
     line-height: 1.6;
     margin-bottom: 10px;
 }
 
 .about-cta {
-    padding: 60px 20px;
+    padding: 70px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background-color: #faf4fd;
 }
 
 .about-cta h2 {
-    font-size: 32px;
+    font-size: 34px;
 }
 
 .about-cta p {
-    color: #777;
+    color: #77707b;
     margin: 10px 0 25px;
 }
 
+/* CONTACT PAGE */
+
 .contact-page {
-    padding: 70px 20px;
+    padding: 80px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #fff3fa, #f4e9fb);
 }
 
 .contact-page h1 {
-    font-size: 45px;
+    font-size: 48px;
     margin: 10px 0 15px;
 }
 
 .contact-page p {
-    color: #777;
+    color: #77707b;
 }
 
 .contact-content {
     display: flex;
     justify-content: center;
     gap: 40px;
-    padding: 60px 7%;
+    padding: 70px 7%;
     flex-wrap: wrap;
 }
 
 .contact-info {
-    width: 400px;
-    padding: 35px;
-    background-color: #fff0f7;
-    border-radius: 18px;
+    width: 420px;
+    padding: 38px;
+    background: linear-gradient(135deg, #fff0f7, #f5eaff);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px #eadfea;
 }
 
 .contact-icon {
-    font-size: 55px;
+    font-size: 60px;
 }
 
 .contact-info h2 {
-    font-size: 30px;
+    font-size: 32px;
     margin: 10px 0;
 }
 
 .contact-info > p {
-    color: #777;
+    color: #77707b;
     line-height: 1.6;
     margin-bottom: 25px;
 }
@@ -1195,11 +1331,11 @@ form textarea {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin: 20px 0;
+    margin: 22px 0;
 }
 
 .contact-item span {
-    font-size: 30px;
+    font-size: 32px;
 }
 
 .contact-item h3 {
@@ -1207,16 +1343,17 @@ form textarea {
 }
 
 .contact-item p {
-    color: #777;
+    color: #77707b;
     margin: 3px 0;
 }
 
 .contact-form {
-    width: 500px;
-    padding: 35px;
+    width: 520px;
+    padding: 38px;
     background-color: white;
-    border: 1px solid #eee;
-    border-radius: 18px;
+    border: 1px solid #eee5f3;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px #eee8f2;
 }
 
 .contact-form h2 {
@@ -1234,10 +1371,17 @@ form textarea {
 .contact-form select,
 .contact-form textarea {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 13px;
+    border: 1px solid #ddd2e4;
+    border-radius: 10px;
     font-size: 15px;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #a66acb;
 }
 
 .contact-form textarea {
@@ -1251,13 +1395,13 @@ form textarea {
 }
 
 .contact-faq {
-    padding: 60px 7%;
+    padding: 70px 7%;
     text-align: center;
     background-color: #fafafa;
 }
 
 .contact-faq h2 {
-    font-size: 32px;
+    font-size: 34px;
     margin-bottom: 30px;
 }
 
@@ -1269,11 +1413,12 @@ form textarea {
 }
 
 .faq-card {
-    width: 270px;
-    padding: 25px;
+    width: 280px;
+    padding: 28px;
     background-color: white;
-    border-radius: 15px;
-    border: 1px solid #eee;
+    border-radius: 18px;
+    border: 1px solid #eee5f3;
+    box-shadow: 0 8px 25px #eee8f2;
 }
 
 .faq-card h3 {
@@ -1281,44 +1426,46 @@ form textarea {
 }
 
 .faq-card p {
-    color: #777;
+    color: #77707b;
     line-height: 1.5;
 }
 
 .contact-cta {
-    padding: 60px 20px;
+    padding: 70px 20px;
     text-align: center;
-    background-color: #f7eafa;
+    background: linear-gradient(135deg, #f8eaff, #fff0f7);
 }
 
 .contact-cta h2 {
-    font-size: 32px;
+    font-size: 34px;
 }
 
 .contact-cta p {
-    color: #777;
+    color: #77707b;
     margin: 10px 0 25px;
 }
 
+/* FOOTER */
+
 footer {
-    padding: 40px 20px;
+    padding: 45px 20px;
     text-align: center;
     background-color: #30243b;
     color: white;
 }
 
 footer h3 {
-    font-size: 25px;
+    font-size: 27px;
     margin-bottom: 8px;
 }
 
 footer p {
-    color: #ddd;
+    color: #ddd5e2;
     margin: 8px 0;
 }
 
 .footer-links {
-    margin: 20px 0;
+    margin: 22px 0;
 }
 
 .footer-links a {
@@ -1332,7 +1479,9 @@ footer p {
     color: #e7b7e8;
 }
 
-@media screen and (max-width: 900px) {
+/* TABLET */
+
+@media screen and (max-width: 1000px) {
 
     header {
         flex-direction: column;
@@ -1349,24 +1498,34 @@ footer p {
     }
 
     .intro-text h1 {
-        font-size: 45px;
+        font-size: 50px;
+    }
+
+    .description {
+        margin: auto;
     }
 
     .gift-area {
         width: 100%;
-        margin-top: 30px;
+        margin-top: 40px;
     }
 
-    nav {
-        gap: 10px;
+    .contact-info,
+    .contact-form {
+        width: 90%;
     }
-
 }
+
+/* MOBILE */
 
 @media screen and (max-width: 600px) {
 
     header {
         padding: 15px;
+    }
+
+    nav {
+        gap: 10px;
     }
 
     nav a {
@@ -1383,7 +1542,7 @@ footer p {
     }
 
     .gift {
-        font-size: 100px;
+        font-size: 105px;
     }
 
     .floating-card {
@@ -1391,12 +1550,33 @@ footer p {
         padding: 8px 12px;
     }
 
+    .card-one {
+        left: 0;
+    }
+
+    .card-two {
+        right: 0;
+    }
+
     .form-container {
         padding: 25px 18px;
     }
 
     .form-container h1 {
-        font-size: 30px;
+        font-size: 31px;
+    }
+
+    .form-page {
+        padding: 40px 10px;
+    }
+
+    .options {
+        gap: 8px;
+    }
+
+    .options label {
+        font-size: 13px;
+        padding: 8px 10px;
     }
 
     .location-search input {
@@ -1427,4 +1607,76 @@ footer p {
         margin: 5px;
     }
 
+    .cta h2 {
+        font-size: 28px;
+    }
+
+    .cta {
+        min-height: 280px;
+        padding: 50px 15px;
+    }
+
+    .contact-info,
+    .contact-form {
+        width: 100%;
+    }
+
+    .about-box {
+        width: 100%;
+    }
+
+    .location-search input {
+        width: 100%;
+    }
+}
+.final-cta {
+    width: 100%;
+    min-height: 320px;
+    padding: 70px 20px;
+    background: linear-gradient(135deg, #f8eaff, #fff0f7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.final-cta h2 {
+    width: 100%;
+    font-size: 35px;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+.final-cta p {
+    width: 100%;
+    color: #77707b;
+    margin: 0 0 20px 0;
+    text-align: center;
+}
+
+.final-cta .main-button {
+    display: inline-block;
+    margin: 10px 0 0 0;
+}
+.error {
+    border: 2px solid #e74c3c !important;
+    background-color: #fff0f0 !important;
+}
+
+.success {
+    border: 2px solid #2ecc71 !important;
+    background-color: #f0fff5 !important;
+}
+
+.error-message {
+    display: block;
+    margin-top: 5px;
+    color: #e74c3c;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.success + .error-message {
+    color: #2ecc71;
 }

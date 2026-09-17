@@ -1,188 +1,1417 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>GiftFinder - About Us</title>
-    <link rel="stylesheet" href="../css/style.css">
-</head>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-<body>
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #fff;
+    line-height: 1.6;
+}
 
-<header>
+header {
+    background-color: white;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
 
-    <div class="logo">🎁 GiftFinder</div>
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #7b4ab5;
+}
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="form.html">Find Gift</a>
-        <a href="categories.html">Categories</a>
-        <a href="gifts.html">Gift Ideas</a>
-        <a href="surprise.html">Surprise Me</a>
-        <a href="location.html">Find Stores</a>
-        <a href="how.html">How It Works</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-    </nav>
+nav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
-</header>
+nav a {
+    text-decoration: none;
+    color: #555;
+    font-size: 14px;
+}
 
-<section class="about-page">
+nav a:hover {
+    color: #7b4ab5;
+}
 
-    <p class="small-title">💝 ABOUT GIFTFINDER</p>
+.small-title {
+    color: #d2529b;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
 
-    <h1>Making Gifting More Special 🎁</h1>
+.main-button {
+    display: inline-block;
+    padding: 13px 25px;
+    background-color: #7b4ab5;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    margin-top: 20px;
+}
 
-    <p>
-        We believe that the best gifts are not always
-        the most expensive ones. They are the ones
-        chosen with thought and care.
-    </p>
+.main-button:hover {
+    background-color: #5f3691;
+}
 
-</section>
+.intro-section {
+    min-height: 600px;
+    padding: 70px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f7eafa;
+}
 
-<section class="about-content">
+.intro-text {
+    width: 50%;
+}
 
-    <div class="about-box">
+.intro-text h1 {
+    font-size: 60px;
+    line-height: 1.1;
+    margin: 15px 0;
+}
 
-        <div class="about-icon">🎁</div>
+.intro-text h1 span {
+    color: #d2529b;
+}
 
-        <h2>What Is GiftFinder?</h2>
+.description {
+    color: #666;
+    max-width: 550px;
+    font-size: 17px;
+}
 
-        <p>
-            GiftFinder is a simple gift discovery website
-            that helps you find thoughtful gift ideas for
-            your family, friends and loved ones.
-        </p>
+.gift-area {
+    width: 45%;
+    height: 450px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
-        <p>
-            You can tell us about the person, their age,
-            relationship, occasion, interests and budget.
-            GiftFinder then helps you explore suitable gift ideas.
-        </p>
+.circle {
+    width: 330px;
+    height: 330px;
+    background-color: #ead9f5;
+    border-radius: 50%;
+}
 
-    </div>
+.gift {
+    position: absolute;
+    font-size: 150px;
+}
 
+.floating-card {
+    position: absolute;
+    background-color: white;
+    padding: 12px 18px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px #ddd;
+}
 
-    <div class="about-box">
+.card-one {
+    top: 70px;
+    left: 10px;
+}
 
-        <div class="about-icon">💡</div>
+.card-two {
+    bottom: 80px;
+    right: 10px;
+}
 
-        <h2>Our Idea</h2>
+.card-three {
+    top: 30px;
+    right: 20px;
+}
 
-        <p>
-            Choosing a gift can sometimes be difficult.
-            You may have a budget but no idea what to buy.
-        </p>
+.categories {
+    padding: 70px 7%;
+    text-align: center;
+}
 
-        <p>
-            GiftFinder is designed to make this process
-            simple, fun and enjoyable.
-        </p>
+.categories h2 {
+    font-size: 35px;
+    margin: 10px 0 35px;
+}
 
-    </div>
+.category-cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
 
-</section>
+.category-card {
+    width: 230px;
+    padding: 30px 20px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 15px;
+}
 
+.category-card:hover {
+    transform: translateY(-5px);
+}
 
-<section class="about-values">
+.category-card div {
+    font-size: 50px;
+}
 
-    <h2>What Makes GiftFinder Special? ✨</h2>
+.category-card h3 {
+    margin: 10px 0;
+}
 
-    <div class="value-cards">
+.category-card p {
+    color: #777;
+}
 
-        <div class="value-card">
-            <div>🎯</div>
-            <h3>Personalized</h3>
-            <p>
-                Gift suggestions based on the person.
-            </p>
-        </div>
+.unique-section {
+    padding: 70px 7%;
+    text-align: center;
+    background-color: #f7eafa;
+}
 
-        <div class="value-card">
-            <div>💰</div>
-            <h3>Budget Friendly</h3>
-            <p>
-                Find gifts that fit different budgets.
-            </p>
-        </div>
+.unique-section h2 {
+    font-size: 35px;
+    margin: 10px 0 35px;
+}
 
-        <div class="value-card">
-            <div>❤️</div>
-            <h3>Meaningful</h3>
-            <p>
-                Choose gifts that show you care.
-            </p>
-        </div>
+.unique-cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
 
-        <div class="value-card">
-            <div>🪄</div>
-            <h3>Fun</h3>
-            <p>
-                Discover unexpected and creative ideas.
-            </p>
-        </div>
+.unique-card {
+    width: 240px;
+    padding: 30px 20px;
+    background-color: white;
+    border-radius: 15px;
+}
 
-    </div>
+.unique-card div {
+    font-size: 45px;
+}
 
-</section>
+.unique-card h3 {
+    margin: 10px 0;
+}
 
+.unique-card p {
+    color: #777;
+}
 
-<section class="about-mission">
+.how-section {
+    padding: 70px 7%;
+    text-align: center;
+}
 
-    <div class="about-icon">🌟</div>
+.how-section h2 {
+    font-size: 35px;
+    margin: 10px 0 35px;
+}
 
-    <h2>Our Mission</h2>
+.steps {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
 
-    <p>
-        Our mission is to make every gifting moment
-        easier, more personal and more memorable.
-    </p>
+.step {
+    width: 270px;
+    padding: 30px 20px;
+}
 
-    <p>
-        Because sometimes one thoughtful gift
-        can create a beautiful memory. ❤️
-    </p>
+.step div {
+    font-size: 45px;
+    color: #7b4ab5;
+}
 
-</section>
+.step h3 {
+    margin: 10px 0;
+}
 
+.step p {
+    color: #777;
+}
 
-<section class="about-cta">
+.location-section {
+    padding: 70px 7%;
+    text-align: center;
+    background-color: #f7eafa;
+}
 
-    <h2>Let's Find Something Special 🎁</h2>
+.location-section h2 {
+    font-size: 35px;
+    margin: 10px 0;
+}
 
-    <p>
-        Start your gift-finding journey today.
-    </p>
+.location-section > p {
+    color: #777;
+}
 
-    <a href="form.html" class="main-button">
-        ✨ Find My Perfect Gift
-    </a>
+.map {
+    width: 100%;
+    height: 400px;
+    margin-top: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+}
 
-</section>
+.map iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
 
+.about-section {
+    padding: 70px 20px;
+    text-align: center;
+}
 
-<footer>
+.about-section h2 {
+    font-size: 35px;
+    margin: 10px 0 15px;
+}
 
-    <h3>🎁 GiftFinder</h3>
+.about-section p {
+    max-width: 700px;
+    margin: auto;
+    color: #777;
+}
 
-    <p>Find. Choose. Gift. ❤️</p>
+.form-page {
+    padding: 60px 20px;
+    background-color: #f7eafa;
+}
 
-    <div class="footer-links">
+.form-container {
+    width: 750px;
+    max-width: 95%;
+    margin: auto;
+    padding: 40px;
+    background-color: white;
+    border-radius: 18px;
+}
 
-        <a href="index.html">Home</a>
-        <a href="form.html">Find Gift</a>
-        <a href="categories.html">Categories</a>
-        <a href="gifts.html">Gift Ideas</a>
-        <a href="surprise.html">Surprise Me</a>
-        <a href="location.html">Find Stores</a>
-        <a href="how.html">How It Works</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+.form-container > .small-title,
+.form-container > h1,
+.form-container > .form-intro {
+    text-align: center;
+}
 
-    </div>
+.form-container h1 {
+    font-size: 40px;
+    margin: 10px 0;
+}
 
-    <p>© 2026 GiftFinder</p>
+.form-intro {
+    color: #777;
+    margin-bottom: 30px;
+}
 
-</footer>
+form label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
 
-</body>
-</html>
+form input[type="text"],
+form input[type="email"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+form textarea {
+    height: 130px;
+    resize: none;
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.options label {
+    margin: 0;
+    padding: 9px 13px;
+    background-color: #faf5fc;
+    border: 1px solid #ead9f5;
+    border-radius: 20px;
+    font-weight: normal;
+}
+
+.options input {
+    margin-right: 5px;
+}
+
+.find-button {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    background-color: #7b4ab5;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 17px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.find-button:hover {
+    background-color: #5f3691;
+}
+
+.surprise-box {
+    margin-top: 30px;
+    padding: 25px;
+    text-align: center;
+    background-color: #fff0f7;
+    border-radius: 15px;
+}
+
+.surprise-box h2 {
+    margin-bottom: 8px;
+}
+
+.surprise-box p {
+    color: #777;
+}
+
+.surprise-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 15px;
+    background-color: #d2529b;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.map-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.map-section h2 {
+    margin-bottom: 8px;
+}
+
+.map-section p {
+    color: #777;
+}
+
+.map-section iframe {
+    width: 100%;
+    height: 350px;
+    border: none;
+    margin-top: 20px;
+    border-radius: 15px;
+}
+
+.page-title {
+    padding: 70px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.page-title h1 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+.page-title p {
+    color: #777;
+}
+
+.category-page {
+    padding: 60px 7%;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.big-category {
+    width: 260px;
+    padding: 30px 20px;
+    text-align: center;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 15px;
+}
+
+.big-category:hover {
+    transform: translateY(-5px);
+}
+
+.big-category > div {
+    font-size: 55px;
+}
+
+.big-category h2 {
+    margin: 10px 0;
+}
+
+.big-category p {
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.outline-button {
+    display: inline-block;
+    padding: 9px 20px;
+    border: 1px solid #7b4ab5;
+    color: #7b4ab5;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.outline-button:hover {
+    background-color: #7b4ab5;
+    color: white;
+}
+
+.cta {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.cta h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.cta p {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.gift-page {
+    padding: 70px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.gift-page h1 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+.gift-intro {
+    color: #777;
+    font-size: 17px;
+}
+
+.gift-category-section {
+    padding: 60px 7%;
+}
+
+.category-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.category-heading span {
+    font-size: 45px;
+}
+
+.category-heading h2 {
+    font-size: 32px;
+    margin: 8px 0;
+}
+
+.category-heading p {
+    color: #777;
+}
+
+.gift-results {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.gift-box {
+    width: 270px;
+    padding: 18px;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+.gift-box:hover {
+    transform: translateY(-5px);
+}
+
+.gift-photo {
+    height: 170px;
+    background-color: #f7eafa;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 75px;
+    margin-bottom: 15px;
+}
+
+.match {
+    display: inline-block;
+    padding: 7px 12px;
+    background-color: #fff0f7;
+    color: #d2529b;
+    border-radius: 20px;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.gift-box h2 {
+    font-size: 20px;
+    margin: 8px 0;
+}
+
+.gift-box p {
+    color: #777;
+    line-height: 1.5;
+    min-height: 45px;
+}
+
+.rating {
+    margin: 10px 0;
+}
+
+.gift-box h3 {
+    color: #7b4ab5;
+    font-size: 21px;
+    margin-bottom: 15px;
+}
+
+.gift-button {
+    display: inline-block;
+    padding: 10px 22px;
+    background-color: #7b4ab5;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.gift-button:hover {
+    background-color: #5f3691;
+}
+
+.gift-actions {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.gift-actions h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.gift-actions p {
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.surprise-link {
+    display: inline-block;
+    margin-left: 15px;
+    color: #7b4ab5;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.surprise-page {
+    padding: 70px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.surprise-page h1 {
+    font-size: 48px;
+    margin: 10px 0;
+}
+
+.surprise-intro {
+    color: #777;
+    font-size: 17px;
+}
+
+.surprise-content {
+    padding: 60px 7%;
+}
+
+.surprise-message {
+    width: 650px;
+    max-width: 90%;
+    margin: 0 auto 45px;
+    padding: 30px;
+    text-align: center;
+    background-color: #fff0f7;
+    border-radius: 18px;
+}
+
+.magic-icon {
+    font-size: 50px;
+}
+
+.surprise-message h2 {
+    margin: 10px 0;
+}
+
+.surprise-message p {
+    color: #777;
+    line-height: 1.6;
+}
+
+.surprise-cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.surprise-card {
+    width: 270px;
+    padding: 18px;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid #eee;
+    text-align: center;
+}
+
+.surprise-card:hover {
+    transform: translateY(-6px);
+}
+
+.surprise-image {
+    height: 170px;
+    background-color: #f7eafa;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 75px;
+    margin-bottom: 15px;
+}
+
+.surprise-card span {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: #fff0f7;
+    color: #d2529b;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.surprise-card h2 {
+    font-size: 20px;
+    margin: 12px 0;
+}
+
+.surprise-card p {
+    color: #777;
+    line-height: 1.5;
+    min-height: 65px;
+}
+
+.surprise-card h3 {
+    color: #7b4ab5;
+    font-size: 21px;
+    margin: 15px 0;
+}
+
+.surprise-cta {
+    padding: 65px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.surprise-cta h2 {
+    font-size: 32px;
+    margin: 10px 0;
+}
+
+.surprise-cta p {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.location-page {
+    padding: 70px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.location-page h1 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+.location-page p {
+    color: #777;
+}
+
+.location-search {
+    margin-top: 30px;
+}
+
+.location-search input {
+    width: 350px;
+    padding: 14px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 15px;
+}
+
+.location-search button {
+    padding: 14px 25px;
+    margin-left: 8px;
+    border: none;
+    border-radius: 25px;
+    background-color: #7b4ab5;
+    color: white;
+    cursor: pointer;
+}
+
+.large-map {
+    margin-top: 30px;
+    width: 100%;
+    height: 450px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.large-map iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.store-section {
+    padding: 60px 7%;
+    text-align: center;
+    background-color: #fafafa;
+}
+
+.store-section h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.store-cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.store-card {
+    width: 250px;
+    padding: 25px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 15px;
+}
+
+.store-card:hover {
+    transform: translateY(-5px);
+}
+
+.store-icon {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.store-card h2 {
+    font-size: 21px;
+    margin: 10px 0;
+}
+
+.store-card p {
+    color: #777;
+}
+
+.store-button {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 20px;
+    background-color: #7b4ab5;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.location-tip {
+    width: 650px;
+    max-width: 90%;
+    margin: 60px auto;
+    padding: 30px;
+    text-align: center;
+    background-color: #fff0f7;
+    border-radius: 15px;
+}
+
+.location-tip div {
+    font-size: 40px;
+}
+
+.location-tip p {
+    color: #777;
+}
+
+.location-cta {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.location-cta h2 {
+    font-size: 32px;
+}
+
+.location-cta p {
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.how-page {
+    padding: 70px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.how-page h1 {
+    font-size: 45px;
+    margin: 10px 0;
+}
+
+.how-page p {
+    color: #777;
+}
+
+.how-content {
+    width: 800px;
+    max-width: 90%;
+    margin: 60px auto;
+}
+
+.how-step {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    padding: 25px;
+    margin-bottom: 20px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 15px;
+}
+
+.how-number {
+    min-width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #7b4ab5;
+    color: white;
+    border-radius: 50%;
+    font-size: 25px;
+}
+
+.how-step h2 {
+    margin-bottom: 8px;
+}
+
+.how-step p {
+    color: #777;
+    line-height: 1.5;
+}
+
+.how-extra {
+    padding: 60px 7%;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.how-extra h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.benefit-cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.benefit-card {
+    width: 220px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.benefit-card div {
+    font-size: 40px;
+}
+
+.benefit-card h3 {
+    margin: 10px 0;
+}
+
+.benefit-card p {
+    color: #777;
+}
+
+.how-cta {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.how-cta h2 {
+    font-size: 32px;
+}
+
+.how-cta p {
+    color: #777;
+    margin: 10px 0 25px;
+}
+
+.about-page {
+    padding: 70px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.about-page h1 {
+    font-size: 45px;
+    margin: 10px 0 20px;
+}
+
+.about-page p {
+    width: 700px;
+    max-width: 90%;
+    margin: auto;
+    color: #777;
+    line-height: 1.6;
+}
+
+.about-content {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 60px 7%;
+    flex-wrap: wrap;
+}
+
+.about-box {
+    width: 450px;
+    padding: 35px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.about-icon {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.about-box h2 {
+    margin-bottom: 15px;
+}
+
+.about-box p {
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.about-values {
+    padding: 60px 7%;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.about-values h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.value-cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.value-card {
+    width: 220px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.value-card div {
+    font-size: 40px;
+}
+
+.value-card h3 {
+    margin: 10px 0;
+}
+
+.value-card p {
+    color: #777;
+}
+
+.about-mission {
+    width: 700px;
+    max-width: 90%;
+    margin: 60px auto;
+    padding: 40px;
+    text-align: center;
+    background-color: #fff0f7;
+    border-radius: 18px;
+}
+
+.about-mission h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.about-mission p {
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.about-cta {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.about-cta h2 {
+    font-size: 32px;
+}
+
+.about-cta p {
+    color: #777;
+    margin: 10px 0 25px;
+}
+
+.contact-page {
+    padding: 70px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.contact-page h1 {
+    font-size: 45px;
+    margin: 10px 0 15px;
+}
+
+.contact-page p {
+    color: #777;
+}
+
+.contact-content {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 60px 7%;
+    flex-wrap: wrap;
+}
+
+.contact-info {
+    width: 400px;
+    padding: 35px;
+    background-color: #fff0f7;
+    border-radius: 18px;
+}
+
+.contact-icon {
+    font-size: 55px;
+}
+
+.contact-info h2 {
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+.contact-info > p {
+    color: #777;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.contact-item span {
+    font-size: 30px;
+}
+
+.contact-item h3 {
+    margin-bottom: 3px;
+}
+
+.contact-item p {
+    color: #777;
+    margin: 3px 0;
+}
+
+.contact-form {
+    width: 500px;
+    padding: 35px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 18px;
+}
+
+.contact-form h2 {
+    margin-bottom: 25px;
+}
+
+.contact-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.contact-form textarea {
+    height: 130px;
+    resize: none;
+}
+
+.contact-form button {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.contact-faq {
+    padding: 60px 7%;
+    text-align: center;
+    background-color: #fafafa;
+}
+
+.contact-faq h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.faq-cards {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.faq-card {
+    width: 270px;
+    padding: 25px;
+    background-color: white;
+    border-radius: 15px;
+    border: 1px solid #eee;
+}
+
+.faq-card h3 {
+    margin-bottom: 10px;
+}
+
+.faq-card p {
+    color: #777;
+    line-height: 1.5;
+}
+
+.contact-cta {
+    padding: 60px 20px;
+    text-align: center;
+    background-color: #f7eafa;
+}
+
+.contact-cta h2 {
+    font-size: 32px;
+}
+
+.contact-cta p {
+    color: #777;
+    margin: 10px 0 25px;
+}
+
+footer {
+    padding: 40px 20px;
+    text-align: center;
+    background-color: #30243b;
+    color: white;
+}
+
+footer h3 {
+    font-size: 25px;
+    margin-bottom: 8px;
+}
+
+footer p {
+    color: #ddd;
+    margin: 8px 0;
+}
+
+.footer-links {
+    margin: 20px 0;
+}
+
+.footer-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 8px;
+    font-size: 14px;
+}
+
+.footer-links a:hover {
+    color: #e7b7e8;
+}
+
+@media screen and (max-width: 900px) {
+
+    header {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .intro-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .intro-text {
+        width: 100%;
+    }
+
+    .intro-text h1 {
+        font-size: 45px;
+    }
+
+    .gift-area {
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    nav {
+        gap: 10px;
+    }
+
+}
+
+@media screen and (max-width: 600px) {
+
+    header {
+        padding: 15px;
+    }
+
+    nav a {
+        font-size: 12px;
+    }
+
+    .intro-text h1 {
+        font-size: 38px;
+    }
+
+    .circle {
+        width: 250px;
+        height: 250px;
+    }
+
+    .gift {
+        font-size: 100px;
+    }
+
+    .floating-card {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .form-container {
+        padding: 25px 18px;
+    }
+
+    .form-container h1 {
+        font-size: 30px;
+    }
+
+    .location-search input {
+        width: 90%;
+    }
+
+    .location-search button {
+        margin-top: 10px;
+        margin-left: 0;
+    }
+
+    .how-step {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .about-page h1,
+    .contact-page h1,
+    .page-title h1,
+    .location-page h1,
+    .gift-page h1,
+    .surprise-page h1 {
+        font-size: 35px;
+    }
+
+    .footer-links a {
+        display: inline-block;
+        margin: 5px;
+    }
+
+}

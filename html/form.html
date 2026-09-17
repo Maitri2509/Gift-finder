@@ -1,378 +1,842 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>GiftFinder - Find Your Gift</title>
+
     <link rel="stylesheet" href="../css/style.css">
+
 </head>
+
 
 <body>
 
+
 <header>
 
-    <div class="logo">🎁 GiftFinder</div>
+    <div class="logo">
+        🎁 GiftFinder
+    </div>
+
 
     <nav>
+
         <a href="index.html">Home</a>
+
         <a href="form.html">Find Gift</a>
+
         <a href="categories.html">Categories</a>
+
         <a href="gifts.html">Gift Ideas</a>
+
         <a href="surprise.html">Surprise Me</a>
+
         <a href="location.html">Find Stores</a>
+
         <a href="how.html">How It Works</a>
+
         <a href="about.html">About</a>
+
         <a href="contact.html">Contact</a>
+
     </nav>
 
 </header>
 
+
+
 <section class="form-page">
 
-    <div class="form-container">
 
-        <p class="small-title">✨ PERSONALIZED GIFT FINDER</p>
+<div class="form-container">
 
-        <h1>Tell Us About Them 💝</h1>
 
-        <p class="form-intro">
-            Answer a few questions and discover a gift
-            that feels truly personal.
-        </p>
+<p class="small-title">
+    ✨ PERSONALIZED GIFT FINDER
+</p>
 
-        <form action="gifts.html">
 
-            <label>Your Name</label>
-            <input type="text" placeholder="Enter your name">
+<h1>
+    Tell Us About Them 💝
+</h1>
 
-            <label>Your Location 📍</label>
-            <input type="text" placeholder="Enter your city or area">
 
-            <label>What's the Occasion? 🎉</label>
+<p class="form-intro">
+    Answer a few questions and discover a gift
+    that feels truly personal.
+</p>
 
-            <div class="options">
 
-                <label><input type="radio" name="occasion"> 🎂 Birthday</label>
+<!-- ================================================= -->
+<!-- FORM START -->
+<!-- ================================================= -->
 
-                <label><input type="radio" name="occasion"> 💍 Anniversary</label>
+<form id="giftForm">
 
-                <label><input type="radio" name="occasion"> 💒 Wedding</label>
 
-                <label><input type="radio" name="occasion"> 💕 Valentine's Day</label>
+<!-- NAME -->
 
-                <label><input type="radio" name="occasion"> 👩‍🍼 Mother's Day</label>
+<label>
+    Your Name
+</label>
 
-                <label><input type="radio" name="occasion"> 👨‍👧 Father's Day</label>
+<input
+    type="text"
+    id="name"
+    placeholder="Enter your name"
+>
 
-                <label><input type="radio" name="occasion"> 🪔 Diwali</label>
+<small id="nameError"></small>
 
-                <label><input type="radio" name="occasion"> 🎊 New Year</label>
 
-                <label><input type="radio" name="occasion"> 🏠 Housewarming</label>
+<!-- LOCATION -->
 
-                <label><input type="radio" name="occasion"> ✨ Other</label>
+<label>
+    Your Location 📍
+</label>
 
-            </div>
+<input
+    type="text"
+    id="location"
+    placeholder="Enter your city or area"
+>
 
-            <label>Who Are You Gifting? ❤️</label>
+<small id="locationError"></small>
 
-            <div class="options">
 
-                <label><input type="radio" name="relation"> 💕 Partner</label>
+<!-- OCCASION -->
 
-                <label><input type="radio" name="relation"> 💍 Spouse</label>
+<label>
+    What's the Occasion? 🎉
+</label>
 
-                <label><input type="radio" name="relation"> 👨‍❤️‍👩 Boyfriend</label>
 
-                <label><input type="radio" name="relation"> 👩‍❤️‍👨 Girlfriend</label>
+<div class="options">
 
-                <label><input type="radio" name="relation"> 👭 Best Friend</label>
 
-                <label><input type="radio" name="relation"> 🧑‍🤝‍🧑 Friend</label>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="birthday">
+    🎂 Birthday
+</label>
 
-                <label><input type="radio" name="relation"> 👩 Mother</label>
 
-                <label><input type="radio" name="relation"> 👨 Father</label>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="anniversary">
+    💍 Anniversary
+</label>
 
-                <label><input type="radio" name="relation"> 👵 Grandparents</label>
 
-                <label><input type="radio" name="relation"> 👧 Sister</label>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="wedding">
+    💒 Wedding
+</label>
 
-                <label><input type="radio" name="relation"> 👦 Brother</label>
 
-                <label><input type="radio" name="relation"> 👩‍🏫 Teacher</label>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="valentines">
+    💕 Valentine's Day
+</label>
 
-                <label><input type="radio" name="relation"> ✨ Other</label>
 
-            </div>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="mothers">
+    👩‍🍼 Mother's Day
+</label>
 
-            <label>Their Age 🎂</label>
 
-            <select>
-                <option>Select Age Group</option>
-                <option>Under 13</option>
-                <option>13–17</option>
-                <option>18–25</option>
-                <option>26–40</option>
-                <option>41–60</option>
-                <option>60+</option>
-            </select>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="fathers">
+    👨‍👧 Father's Day
+</label>
 
-            <label>What's Your Budget? 💰</label>
 
-            <select>
-                <option>Select Budget</option>
-                <option>Under ₹500</option>
-                <option>₹500–₹1000</option>
-                <option>₹1000–₹2500</option>
-                <option>₹2500–₹5000</option>
-                <option>₹5000+</option>
-            </select>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="diwali">
+    🪔 Diwali
+</label>
 
-            <label>What Do They Like? 🎨</label>
-
-            <div class="options">
-
-                <label>
-                    <input type="checkbox">
-                    🎵 Music
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    🎮 Gaming
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    📚 Books
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    👗 Fashion
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    ⚽ Sports
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    📷 Photography
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    ✈️ Travel
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    🎨 Art
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    🍳 Cooking
-                </label>
-
-                <label>
-                    <input type="checkbox">
-                    🌿 Nature
-                </label>
-
-            </div>
-
-            <label>What's Their Personality? 🎭</label>
-
-            <div class="options">
-
-                <label>
-                    <input type="radio" name="personality">
-                    🎨 Creative
-                </label>
-
-                <label>
-                    <input type="radio" name="personality">
-                    🌸 Soft & Cute
-                </label>
-
-                <label>
-                    <input type="radio" name="personality">
-                    🔥 Adventurous
-                </label>
-
-                <label>
-                    <input type="radio" name="personality">
-                    📚 Intellectual
-                </label>
-
-                <label>
-                    <input type="radio" name="personality">
-                    🎮 Gamer
-                </label>
-
-                <label>
-                    <input type="radio" name="personality">
-                    💎 Luxury Lover
-                </label>
-
-                <label>
-                    <input type="radio" name="personality">
-                    🌿 Nature Lover
-                </label>
-
-                <label>
-                    <input type="radio" name="personality">
-                    😂 Funny & Fun
-                </label>
 
-            </div>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="newyear">
+    🎊 New Year
+</label>
 
-            <label>What Feeling Should The Gift Create? 💖</label>
 
-            <div class="options">
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="achievement">
+    🏆 Achievement
+</label>
 
-                <label>
-                    <input type="radio" name="mood">
-                    💕 Loved
-                </label>
 
-                <label>
-                    <input type="radio" name="mood">
-                    😂 Happy
-                </label>
+<label>
+    <input
+        type="radio"
+        name="occasion"
+        value="graduation">
+    🎓 Graduation
+</label>
 
-                <label>
-                    <input type="radio" name="mood">
-                    🥹 Emotional
-                </label>
 
-                <label>
-                    <input type="radio" name="mood">
-                    ✨ Surprised
-                </label>
+</div>
 
-                <label>
-                    <input type="radio" name="mood">
-                    🌟 Impressed
-                </label>
 
-                <label>
-                    <input type="radio" name="mood">
-                    🤗 Special
-                </label>
+<!-- RELATION -->
 
-            </div>
+<label>
+    Who are you gifting? ❤️
+</label>
 
-            <label>What Type of Gift Would They Like? 🎁</label>
 
-            <div class="options">
+<div class="options">
 
-                <label>
-                    <input type="radio" name="gift">
-                    🎁 Useful
-                </label>
 
-                <label>
-                    <input type="radio" name="gift">
-                    🧸 Cute
-                </label>
+<label>
+    <input type="radio"
+           name="relation"
+           value="partner">
+    💕 Partner
+</label>
 
-                <label>
-                    <input type="radio" name="gift">
-                    💝 Personalized
-                </label>
 
-                <label>
-                    <input type="radio" name="gift">
-                    💎 Luxury
-                </label>
+<label>
+    <input type="radio"
+           name="relation"
+           value="spouse">
+    💍 Spouse
+</label>
 
-                <label>
-                    <input type="radio" name="gift">
-                    🖐️ Handmade
-                </label>
 
-            </div>
+<label>
+    <input type="radio"
+           name="relation"
+           value="boyfriend">
+    👩‍❤️‍👨 Boyfriend
+</label>
 
-            <label>When Do You Need The Gift? ⏰</label>
 
-            <div class="options">
+<label>
+    <input type="radio"
+           name="relation"
+           value="girlfriend">
+    👩‍❤️‍👩 Girlfriend
+</label>
 
-                <label>
-                    <input type="radio" name="time">
-                    Today
-                </label>
 
-                <label>
-                    <input type="radio" name="time">
-                    Tomorrow
-                </label>
+<label>
+    <input type="radio"
+           name="relation"
+           value="bestfriend">
+    👭 Best Friend
+</label>
 
-                <label>
-                    <input type="radio" name="time">
-                    This Week
-                </label>
 
-                <label>
-                    <input type="radio" name="time">
-                    No Rush
-                </label>
+<label>
+    <input type="radio"
+           name="relation"
+           value="friend">
+    🧑‍🤝‍🧑 Friend
+</label>
 
-            </div>
 
-            <label>Describe Them 💭</label>
+<label>
+    <input type="radio"
+           name="relation"
+           value="mother">
+    👩 Mother
+</label>
 
-            <textarea placeholder="Example: She loves photography, travelling and cute things..."></textarea>
 
-            <div class="surprise-box">
+<label>
+    <input type="radio"
+           name="relation"
+           value="father">
+    👨 Father
+</label>
 
-                <h2>Don't Know What To Choose? 🪄</h2>
 
-                <p>
-                    Let GiftFinder surprise you with a unique gift idea.
-                </p>
+<label>
+    <input type="radio"
+           name="relation"
+           value="grandmother">
+    👵 Grandmother
+</label>
 
-                <a href="surprise.html" class="surprise-button">
-                    🪄 Surprise Me!
-                </a>
 
-            </div>
+<label>
+    <input type="radio"
+           name="relation"
+           value="grandfather">
+    👴 Grandfather
+</label>
 
-            <button type="submit" class="find-button">
-                🎁 Find Perfect Gifts
-            </button>
 
-        </form>
+<label>
+    <input type="radio"
+           name="relation"
+           value="sister">
+    👧 Sister
+</label>
 
-        <div class="map-section">
 
-            <h2>📍 Find Gift Stores Near You</h2>
+<label>
+    <input type="radio"
+           name="relation"
+           value="brother">
+    👦 Brother
+</label>
 
-            <p>Explore nearby places to buy your perfect gift.</p>
 
-            <iframe
-                src="https://www.google.com/maps?q=gift+shops+Ahmedabad&output=embed">
-            </iframe>
+<label>
+    <input type="radio"
+           name="relation"
+           value="daughter">
+    👩‍👧 Daughter
+</label>
 
-            <br><br>
 
-            <a href="location.html" class="main-button">
-                📍 Explore More Stores
-            </a>
+<label>
+    <input type="radio"
+           name="relation"
+           value="son">
+    👨‍👦 Son
+</label>
 
-        </div>
 
-    </div>
+<label>
+    <input type="radio"
+           name="relation"
+           value="other">
+    ✨ Other
+</label>
+
+
+</div>
+
+
+<!-- AGE -->
+
+<label>
+    Their Age 🎂
+</label>
+
+
+<select id="age">
+
+    <option value="">
+        Select Age Group
+    </option>
+
+    <option value="under13">
+        Under 13
+    </option>
+
+    <option value="13-17">
+        13–17
+    </option>
+
+    <option value="18-25">
+        18–25
+    </option>
+
+    <option value="26-40">
+        26–40
+    </option>
+
+    <option value="41-60">
+        41–60
+    </option>
+
+    <option value="60plus">
+        60+
+    </option>
+
+</select>
+
+
+<!-- BUDGET -->
+
+<label>
+    What's Your Budget? 💰
+</label>
+
+
+<select id="budget">
+
+    <option value="">
+        Select Budget
+    </option>
+
+    <option value="under500">
+        Under ₹500
+    </option>
+
+    <option value="500-1000">
+        ₹500–₹1000
+    </option>
+
+    <option value="1000-2500">
+        ₹1000–₹2500
+    </option>
+
+    <option value="2500-5000">
+        ₹2500–₹5000
+    </option>
+
+    <option value="5000plus">
+        ₹5000+
+    </option>
+
+</select>
+
+
+<!-- INTERESTS -->
+
+<label>
+    What Do They Like? 🎨
+</label>
+
+
+<div class="options">
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="music">
+    🎵 Music
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="gaming">
+    🎮 Gaming
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="books">
+    📚 Books
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="fashion">
+    👗 Fashion
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="sports">
+    ⚽ Sports
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="photography">
+    📷 Photography
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="travel">
+    ✈️ Travel
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="art">
+    🎨 Art
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="cooking">
+    🍳 Cooking
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="plants">
+    🌱 Plants
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="pets">
+    🐶 Pets
+</label>
+
+
+<label>
+    <input type="checkbox"
+           name="interest"
+           value="technology">
+    💻 Technology
+</label>
+
+
+</div>
+
+
+<!-- PERSONALITY -->
+
+<label>
+    What's Their Personality? 🎭
+</label>
+
+
+<div class="options">
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="creative">
+    🎨 Creative
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="cute">
+    🌸 Soft & Cute
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="adventurous">
+    🔥 Adventurous
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="intellectual">
+    📚 Intellectual
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="gamer">
+    🎮 Gamer
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="luxury">
+    💎 Luxury Lover
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="nature">
+    🌿 Nature Lover
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="funny">
+    😂 Funny & Fun
+</label>
+
+
+<label>
+    <input type="radio"
+           name="personality"
+           value="simple">
+    🧘 Calm & Simple
+</label>
+
+
+</div>
+
+
+<!-- MOOD -->
+
+<label>
+    What Feeling Should The Gift Create? 💖
+</label>
+
+
+<div class="options">
+
+
+<label>
+    <input type="radio"
+           name="mood"
+           value="loved">
+    💕 Loved
+</label>
+
+
+<label>
+    <input type="radio"
+           name="mood"
+           value="happy">
+    😂 Happy
+</label>
+
+
+<label>
+    <input type="radio"
+           name="mood"
+           value="emotional">
+    🥹 Emotional
+</label>
+
+
+<label>
+    <input type="radio"
+           name="mood"
+           value="surprised">
+    ✨ Surprised
+</label>
+
+
+<label>
+    <input type="radio"
+           name="mood"
+           value="impressed">
+    🌟 Impressed
+</label>
+
+
+<label>
+    <input type="radio"
+           name="mood"
+           value="special">
+    🤗 Special
+</label>
+
+
+</div>
+
+
+<!-- GIFT TYPE -->
+
+<label>
+    What Type of Gift Would They Like? 🎁
+</label>
+
+
+<div class="options">
+
+
+<label>
+    <input type="radio"
+           name="giftType"
+           value="useful">
+    Useful
+</label>
+
+
+<label>
+    <input type="radio"
+           name="giftType"
+           value="cute">
+    Cute
+</label>
+
+
+<label>
+    <input type="radio"
+           name="giftType"
+           value="personalized">
+    Personalized
+</label>
+
+
+<label>
+    <input type="radio"
+           name="giftType"
+           value="luxury">
+    Luxury
+</label>
+
+
+<label>
+    <input type="radio"
+           name="giftType"
+           value="handmade">
+    Handmade
+</label>
+
+
+</div>
+
+
+<!-- TIME -->
+
+<label>
+    When Do You Need The Gift? ⏰
+</label>
+
+
+<div class="options">
+
+
+<label>
+    <input type="radio"
+           name="time"
+           value="today">
+    Today
+</label>
+
+
+<label>
+    <input type="radio"
+           name="time"
+           value="tomorrow">
+    Tomorrow
+</label>
+
+
+<label>
+    <input type="radio"
+           name="time"
+           value="thisweek">
+    This Week
+</label>
+
+
+<label>
+    <input type="radio"
+           name="time"
+           value="nextweek">
+    Next Week
+</label>
+
+
+</div>
+
+
+<!-- DESCRIPTION -->
+
+<label>
+    Describe Them 💭
+</label>
+
+
+<textarea
+    id="description"
+    placeholder="Example: She loves photography, travelling and cute things...">
+</textarea>
+
+
+<!-- SURPRISE -->
+
+<div class="surprise-box">
+
+    <h2>
+        Don't Know What To Choose? 🪄
+    </h2>
+
+    <p>
+        Let GiftFinder surprise you with a unique gift idea.
+    </p>
+
+    <a
+        href="surprise.html"
+        class="surprise-button">
+
+        🪄 Surprise Me!
+
+    </a>
+
+</div>
+
+
+<!-- SUBMIT BUTTON -->
+
+<button
+    type="submit"
+    class="find-button">
+
+    🎁 Find Perfect Gifts
+
+</button>
+
+
+</form>
+
+
+</div>
 
 </section>
+
 
 <footer>
 
     <h3>🎁 GiftFinder</h3>
 
-    <p>Find. Choose. Gift. ❤️</p>
+    <p>
+        Find. Choose. Gift. ❤️
+    </p>
 
     <div class="footer-links">
 
@@ -388,9 +852,14 @@
 
     </div>
 
-    <p>© 2026 GiftFinder</p>
+    <p>
+        © 2026 GiftFinder
+    </p>
 
 </footer>
+
+
+<script src="../js/script.js"></script>
 
 </body>
 </html>

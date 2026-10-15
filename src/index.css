@@ -1,0 +1,70 @@
+:root {
+  --mauve: #a3538a;
+  --mauve-deep: #8f3f76;
+  --mauve-soft: #c47aae;
+  --lavender: #f3eff5;
+  --lavender-mid: #e8dde9;
+  --ink: #2c3340;
+  --navy: #243044;
+  --muted: #6b7280;
+  --line: #d7d2dc;
+  --white: #ffffff;
+  --page: #faf8fb;
+
+  --font-sans: 'Poppins', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-script: 'Caveat', cursive;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--mauve);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.app {
+  min-height: 100vh;
+  background: var(--page);
+}

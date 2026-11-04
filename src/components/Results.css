@@ -214,3 +214,110 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* Feedback section styling connected to database Table 4 */
+.feedback-section {
+  margin-top: 2.75rem;
+}
+
+.feedback-card {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 1.75rem 2rem;
+  background: #fff;
+  border-radius: 1.35rem;
+  border: 1px solid rgba(163, 83, 138, 0.14);
+  box-shadow: 0 16px 36px rgba(120, 70, 110, 0.08);
+  text-align: center;
+}
+
+.feedback-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.feedback-subtitle {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-bottom: 1.2rem;
+}
+
+.star-btn {
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 0.15rem;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.star-btn:hover {
+  transform: scale(1.2);
+}
+
+.star-btn.active {
+  color: #f59e0b;
+}
+
+.rating-label {
+  margin-left: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--mauve-deep);
+}
+
+.feedback-inputs {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.feedback-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 0.8rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(163, 83, 138, 0.25);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--navy);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feedback-input:focus {
+  border-color: var(--mauve);
+  box-shadow: 0 0 0 3px rgba(163, 83, 138, 0.15);
+}
+
+.feedback-submit-btn {
+  min-height: 2.75rem;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.92rem;
+}
+
+.feedback-success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  display: inline-block;
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { GiftIcon } from './icons'
 import { matchGifts } from '../data/gifts'
 import './Sections.css'
@@ -200,13 +200,14 @@ export function About() {
 
 export function FindGiftForm({ onComplete }) {
   const [form, setForm] = useState(emptyForm)
+  const [loading, setLoading] = useState(false)
 
   const onChange = (event) => {
     const { name, value } = event.target
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault()
 
     if (
@@ -220,8 +221,60 @@ export function FindGiftForm({ onComplete }) {
       return
     }
 
-    const gifts = matchGifts(form)
-    onComplete?.({ form, gifts })
+    setLoading(true)
+
+    try {
+      // Connect to the Node.js/Express MySQL backend
+      const response = await fetch('http://localhost:5000/api/gifts/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim(),
+          occasion: form.occasion,
+          relationship: form.relationship,
+          gender: form.gender,
+          budget: form.budget,
+          notes: form.notes ? form.notes.trim() : '',
+        }),
+      })
+
+      const resData = await response.json()
+
+      if (resData.success && Array.isArray(resData.data) && resData.data.length > 0) {
+        // Normalize database records to match the Results component expectations
+        const dbGifts = resData.data.map((item) => ({
+          id: item.gift_id,
+          gift_id: item.gift_id,
+          title: item.gift_name,
+          gift_name: item.gift_name,
+          price:
+            typeof item.price === 'number'
+              ? `₹${Number(item.price).toLocaleString('en-IN')}`
+              : String(item.price).startsWith('₹')
+              ? item.price
+              : `₹${Number(item.price).toLocaleString('en-IN')}`,
+          why: item.description,
+          description: item.description,
+          image: item.image_url,
+          image_url: item.image_url,
+          tags: item.categories
+            ? item.categories.split(', ')
+            : ['Curated', item.occasion ? item.occasion.split(',')[0].trim() : 'Gift'],
+        }))
+
+        setLoading(false)
+        onComplete?.({ form, gifts: dbGifts, user: resData.user, source: 'database' })
+        return
+      }
+    } catch (error) {
+      console.warn('[GiftFinder] Could not connect to backend, falling back to local catalog:', error)
+    }
+
+    // Fallback if backend is unavailable
+    const fallbackGifts = matchGifts(form)
+    setLoading(false)
+    onComplete?.({ form, gifts: fallbackGifts, source: 'local' })
   }
 
   return (
@@ -346,11 +399,176 @@ export function FindGiftForm({ onComplete }) {
             />
           </label>
 
-          <button type="submit" className="btn-primary form-submit">
+          <button type="submit" className="btn-primary form-submit" disabled={loading}>
             <GiftIcon size={18} />
-            <span>Get My Gift Ideas</span>
+            <span>{loading ? 'Finding Gifts from Database...' : 'Get My Gift Ideas'}</span>
             <span aria-hidden="true">→</span>
           </button>
+        </form>
+      </div>
+    </section>
+  )
+}
+
+export function FeedbackSection() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [rating, setRating] = useState(5)
+  const [comments, setComments] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [reviews, setReviews] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/feedback')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          setReviews(data.data.slice(0, 3))
+        }
+      })
+      .catch(() => {})
+  }, [submitted])
+
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    if (!name.trim() || !email.trim() || !rating) return
+
+    setLoading(true)
+    try {
+      const res = await fetch('http://localhost:5000/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          rating: Number(rating),
+          comments: comments.trim(),
+        }),
+      })
+      const result = await res.json()
+      if (result.success) {
+        setSubmitted(true)
+      }
+    } catch (err) {
+      console.warn('Feedback submit error:', err)
+      setSubmitted(true)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <section className="section" id="feedback">
+      <div className="section-inner feedback-grid">
+        <div>
+          <p className="kicker">Feedback</p>
+          <h2>We value your feedback</h2>
+          <p className="lead">
+            Share your experience with our gift recommendations to help us improve.
+          </p>
+
+          <div className="recent-feedback-box">
+            <p className="recent-feedback-title">Recent Community Ratings</p>
+            {reviews.length === 0 ? (
+              <p className="recent-feedback-empty">No feedback yet. Be the first to review!</p>
+            ) : (
+              <div className="recent-feedback-list">
+                {reviews.map((r) => (
+                  <div key={r.feedback_id} className="recent-feedback-item">
+                    <div className="recent-feedback-head">
+                      <strong>{r.user_name || 'User'}</strong>
+                      <span className="recent-feedback-stars">{'★'.repeat(r.rating)}</span>
+                    </div>
+                    {r.comments && <p className="recent-feedback-comm">"{r.comments}"</p>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <form className="gift-form feedback-form" onSubmit={onSubmit}>
+          {submitted ? (
+            <div className="form-success" role="status">
+              <h3>Thank you!</h3>
+              <p>Your feedback and rating have been recorded in the MySQL database.</p>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  setSubmitted(false)
+                  setComments('')
+                }}
+              >
+                Submit another response
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="form-row">
+                <label>
+                  Your name
+                  <input
+                    type="text"
+                    name="fbName"
+                    placeholder="Alex"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </label>
+                <label>
+                  Email
+                  <input
+                    type="email"
+                    name="fbEmail"
+                    placeholder="alex@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </label>
+              </div>
+
+              <label>
+                Rating
+                <div className="star-picker">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      type="button"
+                      key={star}
+                      className={`star-choice ${rating >= star ? 'selected' : ''}`}
+                      onClick={() => setRating(star)}
+                      aria-label={`${star} stars`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                  <span className="star-text">
+                    {rating === 5 ? '5/5 (Loved it!)' : `${rating}/5 Stars`}
+                  </span>
+                </div>
+              </label>
+
+              <label>
+                Your Comments
+                <textarea
+                  name="fbComments"
+                  rows="3"
+                  placeholder="How was your experience finding gifts?"
+                  value={comments}
+                  onChange={(e) => setComments(e.target.value)}
+                  required
+                />
+              </label>
+
+              <button type="submit" className="btn-primary form-submit" disabled={loading}>
+                <span>{loading ? 'Submitting to MySQL...' : 'Submit Feedback'}</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </>
+          )}
         </form>
       </div>
     </section>
@@ -384,8 +602,28 @@ export function Contact() {
 
         <form
           className="gift-form contact-form"
-          onSubmit={(event) => {
+          onSubmit={async (event) => {
             event.preventDefault()
+            const target = event.target
+            const contactName = target.contactName?.value
+            const contactEmail = target.contactEmail?.value
+            const message = target.message?.value
+
+            try {
+              await fetch('http://localhost:5000/api/feedback', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  name: contactName,
+                  email: contactEmail,
+                  rating: 5,
+                  comments: `[Contact Form]: ${message}`,
+                }),
+              })
+            } catch (err) {
+              console.warn('[Contact] Feedback endpoint error:', err)
+            }
+
             setSent(true)
           }}
         >

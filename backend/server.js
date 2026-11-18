@@ -138,9 +138,11 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`[GiftFinder Server] Running on http://localhost:${PORT}`);
-  console.log(`[GiftFinder Server] Database Provider: Supabase`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[GiftFinder Server] Running on http://localhost:${PORT}`);
+    console.log(`[GiftFinder Server] Database Provider: Supabase`);
+  });
+}
 
 module.exports = app;

@@ -78,7 +78,12 @@ const STEPS = [
   },
 ]
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE =
+  import.meta.env.VITE_API_URL !== undefined
+    ? import.meta.env.VITE_API_URL
+    : import.meta.env.DEV
+    ? 'http://localhost:5000'
+    : ''
 
 const emptyForm = {
   name: '',

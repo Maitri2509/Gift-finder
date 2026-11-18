@@ -1,80 +1,89 @@
-const pool = require('./config/db');
+const supabase = require('./config/supabase');
 
 async function viewDatabase() {
   console.log('\n======================================================');
-  console.log('       GIFTFINDER DATABASE VIEWER (MySQL)            ');
+  console.log('       GIFTFINDER DATABASE VIEWER (Supabase)         ');
   console.log('======================================================\n');
+
+  if (!supabase) {
+    console.error('[Error] Supabase client is not configured. Please add SUPABASE_URL and SUPABASE_KEY to backend/.env.');
+    process.exit(1);
+  }
 
   try {
     // 1. Users Table
     console.log('--- 1. USERS TABLE (users) ---');
-    const [users] = await pool.query('SELECT user_id, name, email, created_at FROM users ORDER BY user_id DESC LIMIT 10');
-    console.table(users);
+    const { data: users, error: uErr } = await supabase
+      .from('users')
+      .select('id, name, occasion, relationship, budget, created_at')
+      .order('id', { ascending: false })
+      .limit(10);
+    if (uErr) console.error('Users error:', uErr.message);
+    else console.table(users);
 
     // 2. User Gift Recommendations History Table
     console.log('\n--- 2. USER RECOMMENDATIONS HISTORY (user_gifts) ---');
-    const [userGifts] = await pool.query(`
-      SELECT 
-        ug.user_gift_id,
-        u.name AS user_name,
-        g.gift_name,
-        ug.occasion,
-        ug.relationship,
-        ug.budget,
-        ug.created_at
-      FROM user_gifts ug
-      JOIN users u ON ug.user_id = u.user_id
-      JOIN gifts g ON ug.gift_id = g.gift_id
-      ORDER BY ug.user_gift_id DESC
-      LIMIT 10
-    `);
-    console.table(userGifts);
+    const { data: userGifts, error: ugErr } = await supabase
+      .from('user_gifts')
+      .select('user_id, gift_id, users(name), gifts(name)')
+      .limit(10);
+    if (ugErr) console.error('User gifts error:', ugErr.message);
+    else {
+      console.table(
+        (userGifts || []).map((ug) => ({
+          user_id: ug.user_id,
+          user_name: ug.users?.name,
+          gift_id: ug.gift_id,
+          gift_name: ug.gifts?.name,
+        }))
+      );
+    }
 
     // 3. Feedback Table
     console.log('\n--- 3. USER FEEDBACK TABLE (feedback) ---');
-    const [feedback] = await pool.query(`
-      SELECT 
-        f.feedback_id,
-        u.name AS user_name,
-        f.rating,
-        f.comments,
-        f.created_at
-      FROM feedback f
-      JOIN users u ON f.user_id = u.user_id
-      ORDER BY f.feedback_id DESC
-      LIMIT 10
-    `);
-    console.table(feedback);
+    const { data: feedback, error: fErr } = await supabase
+      .from('feedback')
+      .select('id, user_id, rating, comments, created_at, users(name)')
+      .order('id', { ascending: false })
+      .limit(10);
+    if (fErr) console.error('Feedback error:', fErr.message);
+    else {
+      console.table(
+        (feedback || []).map((f) => ({
+          id: f.id,
+          user_name: f.users?.name,
+          rating: f.rating,
+          comments: f.comments,
+          created_at: f.created_at,
+        }))
+      );
+    }
 
-    // 4. Gifts Catalog (Top 5)
-    console.log('\n--- 4. GIFTS CATALOG (gifts - First 5 items) ---');
-    const [gifts] = await pool.query('SELECT gift_id, gift_name, price, budget, occasion FROM gifts LIMIT 5');
-    console.table(gifts);
+    // 4. Gifts Catalog
+    console.log('\n--- 4. GIFTS CATALOG (gifts - First 10 items) ---');
+    const { data: gifts, error: gErr } = await supabase
+      .from('gifts')
+      .select('id, name, price, image, created_at')
+      .order('id', { ascending: true })
+      .limit(10);
+    if (gErr) console.error('Gifts error:', gErr.message);
+    else console.table(gifts);
 
-    // 5. Categories Table
-    console.log('\n--- 5. CATEGORIES TABLE (categories) ---');
-    const [categories] = await pool.query('SELECT category_id, category_name FROM categories');
-    console.table(categories);
+    // 5. Categories
+    console.log('\n--- 5. CATEGORIES (categories) ---');
+    const { data: categories, error: cErr } = await supabase
+      .from('categories')
+      .select('id, name')
+      .order('id', { ascending: true });
+    if (cErr) console.error('Categories error:', cErr.message);
+    else console.table(categories);
 
-    // Summary counts
-    const [counts] = await pool.query(`
-      SELECT 
-        (SELECT COUNT(*) FROM users) AS total_users,
-        (SELECT COUNT(*) FROM gifts) AS total_gifts,
-        (SELECT COUNT(*) FROM categories) AS total_categories,
-        (SELECT COUNT(*) FROM feedback) AS total_feedback,
-        (SELECT COUNT(*) FROM user_gifts) AS total_user_gifts
-    `);
-    console.log('\n--- TOTAL RECORD COUNTS ---');
-    console.table(counts);
-
-    console.log('\nAll data retrieved successfully from MySQL database: giftfinder_db\n');
-  } catch (error) {
-    console.error('Error viewing database:', error.message);
+    console.log('\nSupabase inspection complete!\n');
+  } catch (err) {
+    console.error('Error viewing database:', err.message);
   } finally {
     process.exit(0);
   }
 }
 
 viewDatabase();
-

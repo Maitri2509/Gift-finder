@@ -47,6 +47,11 @@ export default function Hero() {
             src="/hero-gifts.jpg"
             alt="Stack of pastel pink, lavender, and cream gift boxes with satin ribbons"
             className="hero-image"
+            onError={(e) => {
+              e.currentTarget.onerror = null
+              e.currentTarget.src =
+                'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1200&q=80'
+            }}
           />
         </div>
       </div>

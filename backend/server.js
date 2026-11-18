@@ -3,7 +3,7 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const express = require('express');
 const cors = require('cors');
-const pool = require('./config/db');
+const supabase = require('./config/supabase');
 
 // Import route modules
 const userRoutes = require('./routes/userRoutes');
@@ -14,15 +14,19 @@ const userGiftRoutes = require('./routes/userGiftRoutes');
 
 const app = express();
 
-// Middlewares - allow all origins for smooth local development
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Root API overview
-app.get('/', (req, res) => {
+// Serve static frontend build if it exists
+const distPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(distPath));
+
+// API overview
+app.get('/api', (req, res) => {
   res.json({
-    message: 'Welcome to the GiftFinder Backend API (Node.js + Express + MySQL)',
-    database: process.env.DB_NAME || 'giftfinder_db',
+    message: 'Welcome to the GiftFinder Backend API (Node.js + Express + Supabase)',
+    database_provider: 'Supabase (PostgreSQL)',
     endpoints: {
       health: 'GET /api/health',
       users: 'GET /api/users, POST /api/users, GET /api/users/:id/gifts',
@@ -34,25 +38,62 @@ app.get('/', (req, res) => {
   });
 });
 
-// Health check endpoint (checks MySQL DB status and returns table statistics)
+// Health check endpoint (checks Supabase connectivity and table counts)
 app.get('/api/health', async (req, res) => {
   try {
-    const [dbResult] = await pool.query('SELECT DATABASE() AS current_db, VERSION() AS mysql_version');
-    const [counts] = await pool.query(`
-      SELECT 
-        (SELECT COUNT(*) FROM users) AS total_users,
-        (SELECT COUNT(*) FROM gifts) AS total_gifts,
-        (SELECT COUNT(*) FROM categories) AS total_categories,
-        (SELECT COUNT(*) FROM feedback) AS total_feedback,
-        (SELECT COUNT(*) FROM user_gifts) AS total_user_gifts
-    `);
+    if (!supabase) {
+      return res.status(200).json({
+        status: 'PENDING_CONFIG',
+        database_connected: false,
+        message: 'SUPABASE_URL and SUPABASE_KEY need to be configured in backend/.env',
+        timestamp: new Date(),
+      });
+    }
+
+    // Query exact row counts from all 5 Supabase tables in parallel
+    const [
+      { count: usersCount, error: usersErr },
+      { count: giftsCount, error: giftsErr },
+      { count: categoriesCount, error: catErr },
+      { count: feedbackCount, error: feedErr },
+      { count: userGiftsCount, error: ugErr },
+    ] = await Promise.all([
+      supabase.from('users').select('*', { count: 'exact', head: true }),
+      supabase.from('gifts').select('*', { count: 'exact', head: true }),
+      supabase.from('categories').select('*', { count: 'exact', head: true }),
+      supabase.from('feedback').select('*', { count: 'exact', head: true }),
+      supabase.from('user_gifts').select('*', { count: 'exact', head: true }),
+    ]);
+
+    const anyError = usersErr || giftsErr || catErr || feedErr || ugErr;
+    if (anyError) {
+      return res.status(200).json({
+        status: 'DEGRADED',
+        database_connected: true,
+        provider: 'Supabase (PostgreSQL)',
+        warning: anyError.message,
+        records: {
+          total_users: usersCount ?? 'error',
+          total_gifts: giftsCount ?? 'error',
+          total_categories: categoriesCount ?? 'error',
+          total_feedback: feedbackCount ?? 'error',
+          total_user_gifts: userGiftsCount ?? 'error',
+        },
+        timestamp: new Date(),
+      });
+    }
 
     res.json({
       status: 'UP',
       database_connected: true,
-      database: dbResult[0].current_db,
-      mysql_version: dbResult[0].mysql_version,
-      records: counts[0],
+      provider: 'Supabase (PostgreSQL)',
+      records: {
+        total_users: usersCount || 0,
+        total_gifts: giftsCount || 0,
+        total_categories: categoriesCount || 0,
+        total_feedback: feedbackCount || 0,
+        total_user_gifts: userGiftsCount || 0,
+      },
       timestamp: new Date(),
     });
   } catch (error) {
@@ -72,11 +113,17 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/user-gifts', userGiftRoutes);
 
-// 404 Route handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `API route ${req.method} ${req.originalUrl} not found`,
+// Catch-all route to serve React app in production, or 404 for API calls
+app.use((req, res, next) => {
+  if (req.originalUrl.startsWith('/api')) {
+    return res.status(404).json({
+      success: false,
+      message: `API route ${req.method} ${req.originalUrl} not found`,
+    });
+  }
+  const indexPath = path.join(distPath, 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) next();
   });
 });
 
@@ -93,7 +140,7 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`[GiftFinder Server] Running on http://localhost:${PORT}`);
-  console.log(`[GiftFinder Server] Database: ${process.env.DB_NAME || 'giftfinder_db'} on port ${process.env.DB_PORT || 3306}`);
+  console.log(`[GiftFinder Server] Database Provider: Supabase`);
 });
 
 module.exports = app;

@@ -1,77 +1,113 @@
-const pool = require('../config/db');
+const supabase = require('../config/supabase');
 
-// Model for 'user_gifts' table
 const UserGiftModel = {
-  // Save one or multiple recommended gifts for a user session
-  async saveRecommendations({ user_id, gift_ids, occasion, relationship, gender, budget, user_notes }) {
-    if (!Array.isArray(gift_ids) || gift_ids.length === 0) {
+  // Save recommendations into user_gifts table
+  async saveRecommendations({ user_id, gift_ids }) {
+    if (!supabase) return [];
+    if (!user_id || !Array.isArray(gift_ids) || gift_ids.length === 0) return [];
+
+    try {
+      const rows = gift_ids.map((gift_id) => ({
+        user_id,
+        gift_id,
+      }));
+
+      const { data, error } = await supabase
+        .from('user_gifts')
+        .insert(rows)
+        .select();
+
+      if (error) {
+        console.error('[UserGiftModel:saveRecommendations error]:', error.message);
+        return [];
+      }
+
+      return data || rows;
+    } catch (err) {
+      console.error('[UserGiftModel:saveRecommendations exception]:', err.message);
       return [];
     }
-
-    const inserted = [];
-    for (const gift_id of gift_ids) {
-      const [result] = await pool.query(
-        `INSERT INTO user_gifts (user_id, gift_id, occasion, relationship, gender, budget, user_notes)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [user_id, gift_id, occasion || null, relationship || null, gender || null, budget || null, user_notes || null]
-      );
-      inserted.push(result.insertId);
-    }
-
-    return inserted;
   },
 
-  // Get gift history for a specific user
+  // Get gifts saved for a specific user
   async getByUserId(userId) {
-    const [rows] = await pool.query(
-      `SELECT 
-         ug.user_gift_id,
-         ug.user_id,
-         ug.occasion,
-         ug.relationship,
-         ug.gender,
-         ug.budget,
-         ug.user_notes,
-         ug.created_at,
-         g.gift_id,
-         g.gift_name,
-         g.price,
-         g.image_url,
-         g.description
-       FROM user_gifts ug
-       JOIN gifts g ON ug.gift_id = g.gift_id
-       WHERE ug.user_id = ?
-       ORDER BY ug.user_gift_id DESC`,
-      [userId]
-    );
-    return rows;
+    if (!supabase) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('user_gifts')
+        .select(`
+          user_id,
+          gift_id,
+          gifts (
+            id,
+            name,
+            price,
+            image
+          )
+        `)
+        .eq('user_id', userId);
+
+      if (error) throw error;
+
+      return (data || []).map((row) => ({
+        user_id: row.user_id,
+        gift_id: row.gift_id,
+        gift_name: row.gifts?.name,
+        name: row.gifts?.name,
+        price: row.gifts?.price,
+        image: row.gifts?.image,
+        image_url: row.gifts?.image,
+      }));
+    } catch (err) {
+      console.error('[UserGiftModel:getByUserId error]:', err.message);
+      return [];
+    }
   },
 
-  // Get all user gift records
+  // Get all user gift recommendation history
   async getAll() {
-    const [rows] = await pool.query(
-      `SELECT 
-         ug.user_gift_id,
-         ug.user_id,
-         u.name AS user_name,
-         u.email AS user_email,
-         ug.gift_id,
-         g.gift_name,
-         g.price,
-         ug.occasion,
-         ug.relationship,
-         ug.gender,
-         ug.budget,
-         ug.user_notes,
-         ug.created_at
-       FROM user_gifts ug
-       JOIN users u ON ug.user_id = u.user_id
-       JOIN gifts g ON ug.gift_id = g.gift_id
-       ORDER BY ug.user_gift_id DESC`
-    );
-    return rows;
+    if (!supabase) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('user_gifts')
+        .select(`
+          user_id,
+          gift_id,
+          users (
+            id,
+            name,
+            occasion,
+            relationship,
+            budget
+          ),
+          gifts (
+            id,
+            name,
+            price,
+            image
+          )
+        `);
+
+      if (error) throw error;
+
+      return (data || []).map((row) => ({
+        user_id: row.user_id,
+        user_name: row.users?.name || 'Guest User',
+        occasion: row.users?.occasion,
+        relationship: row.users?.relationship,
+        budget: row.users?.budget,
+        gift_id: row.gift_id,
+        gift_name: row.gifts?.name,
+        price: row.gifts?.price,
+        image: row.gifts?.image,
+      }));
+    } catch (err) {
+      console.error('[UserGiftModel:getAll error]:', err.message);
+      return [];
+    }
   },
 };
 
 module.exports = UserGiftModel;
-

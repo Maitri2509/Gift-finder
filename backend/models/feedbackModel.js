@@ -1,80 +1,126 @@
-const pool = require('../config/db');
+const supabase = require('../config/supabase');
 
-// Model for 'feedback' table
 const FeedbackModel = {
-  // Create a new feedback entry
-  async create({ user_id, gift_id = null, rating, comments }) {
-    const [result] = await pool.query(
-      `INSERT INTO feedback (user_id, gift_id, rating, comments)
-       VALUES (?, ?, ?, ?)`,
-      [user_id, gift_id || null, Number(rating), comments ? comments.trim() : null]
-    );
+  // Create a new feedback entry in Supabase
+  async create({ user_id, rating, comments }) {
+    if (!supabase) throw new Error('Supabase client not initialized');
 
-    return this.getById(result.insertId);
+    const { data, error } = await supabase
+      .from('feedback')
+      .insert([
+        {
+          user_id,
+          rating: Number(rating),
+          comments: comments ? comments.trim() : null,
+        },
+      ])
+      .select(`
+        id,
+        user_id,
+        rating,
+        comments,
+        created_at,
+        users (
+          id,
+          name
+        )
+      `)
+      .single();
+
+    if (error) {
+      console.error('[FeedbackModel:create error]:', error.message);
+      throw error;
+    }
+
+    return {
+      id: data.id,
+      feedback_id: data.id,
+      user_id: data.user_id,
+      user_name: data.users?.name || 'Customer',
+      name: data.users?.name || 'Customer',
+      rating: data.rating,
+      comments: data.comments,
+      created_at: data.created_at,
+    };
   },
 
   // Get feedback by ID
-  async getById(feedbackId) {
-    const [rows] = await pool.query(
-      `SELECT 
-         f.feedback_id,
-         f.user_id,
-         u.name AS user_name,
-         u.email AS user_email,
-         f.gift_id,
-         g.gift_name,
-         f.rating,
-         f.comments,
-         f.created_at
-       FROM feedback f
-       JOIN users u ON f.user_id = u.user_id
-       LEFT JOIN gifts g ON f.gift_id = g.gift_id
-       WHERE f.feedback_id = ?`,
-      [feedbackId]
-    );
-    return rows[0] || null;
+  async getById(id) {
+    if (!supabase) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('feedback')
+        .select(`
+          id,
+          user_id,
+          rating,
+          comments,
+          created_at,
+          users (
+            id,
+            name
+          )
+        `)
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      if (!data) return null;
+
+      return {
+        id: data.id,
+        feedback_id: data.id,
+        user_id: data.user_id,
+        user_name: data.users?.name || 'Customer',
+        name: data.users?.name || 'Customer',
+        rating: data.rating,
+        comments: data.comments,
+        created_at: data.created_at,
+      };
+    } catch (err) {
+      console.error('[FeedbackModel:getById error]:', err.message);
+      return null;
+    }
   },
 
-  // Get all feedback with user & gift information
+  // Get all feedback ordered by latest first
   async getAll() {
-    const [rows] = await pool.query(`
-      SELECT 
-        f.feedback_id,
-        f.user_id,
-        u.name AS user_name,
-        u.email AS user_email,
-        f.gift_id,
-        g.gift_name,
-        f.rating,
-        f.comments,
-        f.created_at
-      FROM feedback f
-      JOIN users u ON f.user_id = u.user_id
-      LEFT JOIN gifts g ON f.gift_id = g.gift_id
-      ORDER BY f.feedback_id DESC
-    `);
-    return rows;
-  },
+    if (!supabase) return [];
 
-  // Get feedback for a specific gift
-  async getByGiftId(giftId) {
-    const [rows] = await pool.query(
-      `SELECT 
-         f.feedback_id,
-         f.user_id,
-         u.name AS user_name,
-         f.rating,
-         f.comments,
-         f.created_at
-       FROM feedback f
-       JOIN users u ON f.user_id = u.user_id
-       WHERE f.gift_id = ?
-       ORDER BY f.feedback_id DESC`,
-      [giftId]
-    );
-    return rows;
+    try {
+      const { data, error } = await supabase
+        .from('feedback')
+        .select(`
+          id,
+          user_id,
+          rating,
+          comments,
+          created_at,
+          users (
+            id,
+            name
+          )
+        `)
+        .order('id', { ascending: false });
+
+      if (error) throw error;
+
+      return (data || []).map((item) => ({
+        id: item.id,
+        feedback_id: item.id,
+        user_id: item.user_id,
+        user_name: item.users?.name || 'Customer',
+        name: item.users?.name || 'Customer',
+        rating: item.rating,
+        comments: item.comments,
+        created_at: item.created_at,
+      }));
+    } catch (err) {
+      console.error('[FeedbackModel:getAll error]:', err.message);
+      return [];
+    }
   },
 };
 
 module.exports = FeedbackModel;
-

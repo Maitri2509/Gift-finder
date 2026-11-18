@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { GiftIcon } from './icons'
 import './Results.css'
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
 export default function Results({ payload, onBack }) {
   if (!payload) return null
 
@@ -17,11 +19,11 @@ export default function Results({ payload, onBack }) {
     setSubmittingFeedback(true)
 
     try {
-      await fetch('http://localhost:5000/api/feedback', {
+      await fetch(`${API_BASE}/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          user_id: user?.user_id || null,
+          user_id: user?.id || user?.user_id || null,
           email: form.email || null,
           name: form.name || 'Valued User',
           rating,
@@ -79,7 +81,15 @@ export default function Results({ payload, onBack }) {
             {gifts.map((gift, index) => (
               <article key={gift.id || gift.gift_id || index} className="result-card">
                 <div className="result-media">
-                  <img src={gift.image || gift.image_url} alt={gift.title || gift.gift_name} />
+                  <img
+                    src={gift.image || gift.image_url || 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80'}
+                    alt={gift.title || gift.gift_name || 'Gift match'}
+                    onError={(e) => {
+                      e.currentTarget.onerror = null
+                      e.currentTarget.src =
+                        'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=800&q=80'
+                    }}
+                  />
                   <span className="result-rank">#{index + 1}</span>
                 </div>
                 <div className="result-body">

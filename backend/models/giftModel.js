@@ -1,10 +1,12 @@
-const pool = require('../config/db');
+const supabase = require('../config/supabase');
 
-// Helper to determine budget bounds from budget label
 function getBudgetPriceRange(budgetLabel) {
   if (!budgetLabel) return null;
-  const label = budgetLabel.trim();
-  if (label.includes('Under') || label.includes('1,000') && !label.includes('2,500')) {
+  if (typeof budgetLabel === 'number') {
+    return { min: 0, max: budgetLabel };
+  }
+  const label = String(budgetLabel).trim();
+  if (label.includes('Under') || (label.includes('1,000') && !label.includes('2,500'))) {
     return { min: 0, max: 1000 };
   }
   if (label.includes('1,000 – ₹2,500') || (label.includes('1,000') && label.includes('2,500'))) {
@@ -16,219 +18,243 @@ function getBudgetPriceRange(budgetLabel) {
   if (label.includes('5,000+') || label.includes('5000')) {
     return { min: 5000, max: 999999 };
   }
+  const digits = label.replace(/[^\d.]/g, '');
+  if (digits) {
+    const num = Number(digits);
+    return { min: 0, max: num };
+  }
   return null;
 }
 
 const GiftModel = {
-  // Get all gifts with linked category names
-  async getAll({ occasion, relationship, gender, budget, minPrice, maxPrice, search } = {}) {
-    let query = `
-      SELECT 
-        g.gift_id,
-        g.gift_name,
-        g.description,
-        g.price,
-        g.image_url,
-        g.occasion,
-        g.relationship,
-        g.gender,
-        g.budget,
-        g.created_at,
-        GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') AS categories
-      FROM gifts g
-      LEFT JOIN gift_categories gc ON g.gift_id = gc.gift_id
-      LEFT JOIN categories c ON gc.category_id = c.category_id
-      WHERE 1=1
-    `;
-    const params = [];
+  // Get all gifts with linked categories
+  async getAll({ minPrice, maxPrice, search } = {}) {
+    if (!supabase) return [];
 
-    if (occasion) {
-      query += ` AND g.occasion LIKE ?`;
-      params.push(`%${occasion}%`);
+    try {
+      // 1. Fetch gifts
+      let query = supabase.from('gifts').select('*').order('id', { ascending: true });
+
+      if (minPrice != null && !isNaN(Number(minPrice))) {
+        query = query.gte('price', Number(minPrice));
+      }
+      if (maxPrice != null && !isNaN(Number(maxPrice))) {
+        query = query.lte('price', Number(maxPrice));
+      }
+
+      const { data: gifts, error: giftError } = await query;
+      if (giftError) throw giftError;
+      if (!gifts || gifts.length === 0) return [];
+
+      // 2. Fetch linked categories for all gifts
+      const { data: giftCats } = await supabase
+        .from('gift_categories')
+        .select('gift_id, category_id, categories(id, name)');
+
+      const catMap = {};
+      if (Array.isArray(giftCats)) {
+        giftCats.forEach((gc) => {
+          if (!catMap[gc.gift_id]) catMap[gc.gift_id] = [];
+          if (gc.categories && gc.categories.name) {
+            catMap[gc.gift_id].push(gc.categories.name);
+          }
+        });
+      }
+
+      // 3. Format and normalize gifts
+      const formatted = gifts.map((g) => {
+        const categories = catMap[g.id] || [];
+        return {
+          id: g.id,
+          gift_id: g.id,
+          name: g.name,
+          gift_name: g.name,
+          title: g.name,
+          price: Number(g.price),
+          image: g.image,
+          image_url: g.image,
+          created_at: g.created_at,
+          categories: categories.join(', '),
+          tags: categories.length > 0 ? categories : ['Curated', 'Gift'],
+          description: `${g.name} - Handpicked gift recommendation`,
+          why: `Curated choice for your recipient`,
+        };
+      });
+
+      if (search) {
+        const s = search.toLowerCase();
+        return formatted.filter(
+          (g) =>
+            g.name.toLowerCase().includes(s) ||
+            g.categories.toLowerCase().includes(s)
+        );
+      }
+
+      return formatted;
+    } catch (err) {
+      console.error('[GiftModel:getAll error]:', err.message);
+      return [];
     }
-
-    if (relationship) {
-      query += ` AND g.relationship LIKE ?`;
-      params.push(`%${relationship}%`);
-    }
-
-    if (gender && gender !== 'Unisex / Any') {
-      query += ` AND (g.gender = ? OR g.gender = 'Unisex / Any' OR g.gender = 'Unisex')`;
-      params.push(gender);
-    }
-
-    if (budget) {
-      query += ` AND (g.budget = ? OR g.budget LIKE ?)`;
-      params.push(budget, `%${budget}%`);
-    }
-
-    if (minPrice != null && !isNaN(Number(minPrice))) {
-      query += ` AND g.price >= ?`;
-      params.push(Number(minPrice));
-    }
-
-    if (maxPrice != null && !isNaN(Number(maxPrice))) {
-      query += ` AND g.price <= ?`;
-      params.push(Number(maxPrice));
-    }
-
-    if (search) {
-      query += ` AND (g.gift_name LIKE ? OR g.description LIKE ?)`;
-      params.push(`%${search}%`, `%${search}%`);
-    }
-
-    query += ` GROUP BY g.gift_id ORDER BY g.gift_id ASC`;
-
-    const [rows] = await pool.query(query, params);
-    return rows;
   },
 
-  // Get single gift by ID with category list
-  async getById(giftId) {
-    const [rows] = await pool.query(
-      `
-      SELECT 
-        g.gift_id,
-        g.gift_name,
-        g.description,
-        g.price,
-        g.image_url,
-        g.occasion,
-        g.relationship,
-        g.gender,
-        g.budget,
-        g.created_at,
-        GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') AS categories
-      FROM gifts g
-      LEFT JOIN gift_categories gc ON g.gift_id = gc.gift_id
-      LEFT JOIN categories c ON gc.category_id = c.category_id
-      WHERE g.gift_id = ?
-      GROUP BY g.gift_id
-    `,
-      [giftId]
-    );
+  // Get single gift by ID
+  async getById(id) {
+    if (!supabase) return null;
 
-    return rows[0] || null;
+    try {
+      const { data: gift, error } = await supabase
+        .from('gifts')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      if (!gift) return null;
+
+      // Fetch categories
+      const { data: giftCats } = await supabase
+        .from('gift_categories')
+        .select('category_id, categories(id, name)')
+        .eq('gift_id', id);
+
+      const categories = (giftCats || [])
+        .map((gc) => gc.categories?.name)
+        .filter(Boolean);
+
+      return {
+        id: gift.id,
+        gift_id: gift.id,
+        name: gift.name,
+        gift_name: gift.name,
+        title: gift.name,
+        price: Number(gift.price),
+        image: gift.image,
+        image_url: gift.image,
+        created_at: gift.created_at,
+        categories: categories.join(', '),
+        tags: categories.length > 0 ? categories : ['Curated', 'Gift'],
+        description: `${gift.name} - Handpicked gift recommendation`,
+        why: `Curated choice for your recipient`,
+      };
+    } catch (err) {
+      console.error('[GiftModel:getById error]:', err.message);
+      return null;
+    }
   },
 
   // Add new gift
-  async create({ gift_name, description, price, image_url, occasion, relationship, gender, budget, category_ids = [] }) {
-    const [result] = await pool.query(
-      `INSERT INTO gifts (gift_name, description, price, image_url, occasion, relationship, gender, budget)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [gift_name, description, price, image_url, occasion, relationship, gender || 'Unisex / Any', budget]
-    );
+  async create({ name, gift_name, price, image, image_url, category_ids = [] }) {
+    if (!supabase) throw new Error('Supabase client not initialized');
 
-    const giftId = result.insertId;
+    const finalName = name || gift_name;
+    const finalImage = image || image_url;
+
+    const { data: newGift, error } = await supabase
+      .from('gifts')
+      .insert([{
+        name: finalName,
+        price: Number(price),
+        image: finalImage,
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
 
     if (Array.isArray(category_ids) && category_ids.length > 0) {
-      const values = category_ids.map((catId) => [giftId, catId]);
-      await pool.query(
-        'INSERT INTO gift_categories (gift_id, category_id) VALUES ?',
-        [values]
-      );
+      const gcRows = category_ids.map((catId) => ({
+        gift_id: newGift.id,
+        category_id: catId,
+      }));
+      await supabase.from('gift_categories').insert(gcRows);
     }
 
-    return this.getById(giftId);
+    return this.getById(newGift.id);
   },
 
   // Update existing gift
-  async update(giftId, { gift_name, description, price, image_url, occasion, relationship, gender, budget }) {
-    await pool.query(
-      `UPDATE gifts 
-       SET gift_name = COALESCE(?, gift_name),
-           description = COALESCE(?, description),
-           price = COALESCE(?, price),
-           image_url = COALESCE(?, image_url),
-           occasion = COALESCE(?, occasion),
-           relationship = COALESCE(?, relationship),
-           gender = COALESCE(?, gender),
-           budget = COALESCE(?, budget)
-       WHERE gift_id = ?`,
-      [gift_name, description, price, image_url, occasion, relationship, gender, budget, giftId]
-    );
+  async update(id, { name, gift_name, price, image, image_url, category_ids }) {
+    if (!supabase) throw new Error('Supabase client not initialized');
 
-    return this.getById(giftId);
+    const updatePayload = {};
+    if (name || gift_name) updatePayload.name = name || gift_name;
+    if (price != null) updatePayload.price = Number(price);
+    if (image || image_url) updatePayload.image = image || image_url;
+
+    if (Object.keys(updatePayload).length > 0) {
+      const { error } = await supabase
+        .from('gifts')
+        .update(updatePayload)
+        .eq('id', id);
+
+      if (error) throw error;
+    }
+
+    if (Array.isArray(category_ids)) {
+      await supabase.from('gift_categories').delete().eq('gift_id', id);
+      if (category_ids.length > 0) {
+        const gcRows = category_ids.map((catId) => ({
+          gift_id: id,
+          category_id: catId,
+        }));
+        await supabase.from('gift_categories').insert(gcRows);
+      }
+    }
+
+    return this.getById(id);
   },
 
-  // Recommendation engine: finds matching gifts based on occasion, relationship, gender, budget, and notes
+  // Recommendation engine: scores gifts against budget, occasion, relationship, and notes
   async recommend({ occasion, relationship, gender, budget, notes }) {
-    // 1. Fetch all candidate gifts with their categories
-    const [allGifts] = await pool.query(`
-      SELECT 
-        g.gift_id,
-        g.gift_name,
-        g.description,
-        g.price,
-        g.image_url,
-        g.occasion,
-        g.relationship,
-        g.gender,
-        g.budget,
-        g.created_at,
-        GROUP_CONCAT(DISTINCT c.category_name SEPARATOR ', ') AS categories
-      FROM gifts g
-      LEFT JOIN gift_categories gc ON g.gift_id = gc.gift_id
-      LEFT JOIN categories c ON gc.category_id = c.category_id
-      GROUP BY g.gift_id
-    `);
+    const allGifts = await this.getAll();
+    if (allGifts.length === 0) return [];
 
     const priceRange = getBudgetPriceRange(budget);
     const notesLower = (notes || '').toLowerCase();
     const noteWords = notesLower.split(/[\s,]+/).filter((w) => w.length > 2);
 
-    // 2. Score candidate gifts
     const scored = allGifts.map((gift) => {
       let score = 0;
+      const p = Number(gift.price);
+      const catText = (gift.categories || '').toLowerCase();
+      const nameText = (gift.name || '').toLowerCase();
 
-      // Gender compatibility check
-      const giftGender = gift.gender || 'Unisex / Any';
-      const isUnisex = giftGender.includes('Unisex') || giftGender === 'Unisex / Any';
-      const isGenderMismatch =
-        gender &&
-        gender !== 'Unisex / Any' &&
-        !isUnisex &&
-        giftGender !== gender;
-
-      if (isGenderMismatch) {
-        return { gift, score: -1 };
-      }
-
-      // Occasion match (+5)
-      if (occasion && gift.occasion && gift.occasion.toLowerCase().includes(occasion.toLowerCase())) {
-        score += 5;
-      }
-
-      // Relationship match (+4)
-      if (relationship && gift.relationship && gift.relationship.toLowerCase().includes(relationship.toLowerCase())) {
-        score += 4;
-      }
-
-      // Budget label match (+5)
-      if (budget && gift.budget && gift.budget.toLowerCase().includes(budget.toLowerCase())) {
-        score += 5;
-      }
-
-      // Price range check (+3)
+      // Budget scoring
       if (priceRange) {
-        const p = Number(gift.price);
         if (p >= priceRange.min && p <= priceRange.max) {
+          score += 6;
+        } else if (p <= priceRange.max) {
           score += 3;
         }
       }
 
-      // Exact gender specific boost (+3)
-      if (gender && (gender === 'Women' || gender === 'Men') && giftGender === gender) {
-        score += 3;
+      // Occasion match in categories or name (+5)
+      if (occasion) {
+        const occ = occasion.toLowerCase();
+        if (catText.includes(occ) || nameText.includes(occ)) {
+          score += 5;
+        }
       }
 
-      // Notes keyword matches (+2 for each matching word)
+      // Relationship match in categories or name (+4)
+      if (relationship) {
+        const rel = relationship.toLowerCase();
+        if (catText.includes(rel) || nameText.includes(rel)) {
+          score += 4;
+        }
+      }
+
+      // Gender preference (+3)
+      if (gender && gender !== 'Unisex / Any') {
+        const gen = gender.toLowerCase();
+        if (catText.includes(gen) || nameText.includes(gen)) {
+          score += 3;
+        }
+      }
+
+      // Notes keyword matches (+2 each)
       for (const word of noteWords) {
-        if (
-          gift.gift_name.toLowerCase().includes(word) ||
-          gift.description.toLowerCase().includes(word) ||
-          (gift.categories && gift.categories.toLowerCase().includes(word))
-        ) {
+        if (nameText.includes(word) || catText.includes(word)) {
           score += 2;
         }
       }
@@ -236,30 +262,28 @@ const GiftModel = {
       return { gift, score };
     });
 
-    // 3. Filter valid matches and sort by highest score
     const filtered = scored
       .filter((item) => item.score > 0)
       .sort((a, b) => b.score - a.score)
       .map((item) => item.gift);
 
-    // If matches are found, return up to 12
     if (filtered.length >= 4) {
       return filtered.slice(0, 12);
     }
 
-    // Fallback: If strict match produced too few, supplement with budget/gender compatible gifts
-    const seenIds = new Set(filtered.map((g) => g.gift_id));
+    // Fallback: If strict score match produces fewer than 4, include other gifts within budget
+    const seenIds = new Set(filtered.map((g) => g.id));
     const fallback = allGifts.filter((g) => {
-      if (seenIds.has(g.gift_id)) return false;
-      const gGender = g.gender || 'Unisex / Any';
-      const genderOk = !gender || gender === 'Unisex / Any' || gGender.includes('Unisex') || gGender === gender;
-      return genderOk;
+      if (seenIds.has(g.id)) return false;
+      if (priceRange) {
+        return Number(g.price) <= priceRange.max * 1.25;
+      }
+      return true;
     });
 
     const combined = [...filtered, ...fallback];
-    return combined.slice(0, 12);
+    return combined.length > 0 ? combined.slice(0, 12) : allGifts.slice(0, 12);
   },
 };
 
 module.exports = GiftModel;
-

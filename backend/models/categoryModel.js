@@ -1,32 +1,88 @@
-const pool = require('../config/db');
+const supabase = require('../config/supabase');
 
-// Model for 'categories' table
 const CategoryModel = {
-  // Get all categories with count of associated gifts
+  // Get all categories with total gifts count
   async getAll() {
-    const [rows] = await pool.query(`
-      SELECT 
-        c.category_id,
-        c.category_name,
-        c.description,
-        COUNT(gc.gift_id) AS total_gifts
-      FROM categories c
-      LEFT JOIN gift_categories gc ON c.category_id = gc.category_id
-      GROUP BY c.category_id, c.category_name, c.description
-      ORDER BY c.category_id ASC
-    `);
-    return rows;
+    if (!supabase) return [];
+
+    try {
+      const { data: categories, error: catError } = await supabase
+        .from('categories')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (catError) throw catError;
+      if (!categories || categories.length === 0) return [];
+
+      // Fetch gift counts from junction table
+      const { data: giftCats, error: gcError } = await supabase
+        .from('gift_categories')
+        .select('category_id');
+
+      const countMap = {};
+      if (!gcError && Array.isArray(giftCats)) {
+        giftCats.forEach((gc) => {
+          countMap[gc.category_id] = (countMap[gc.category_id] || 0) + 1;
+        });
+      }
+
+      return categories.map((c) => ({
+        id: c.id,
+        category_id: c.id,
+        name: c.name,
+        category_name: c.name,
+        total_gifts: countMap[c.id] || 0,
+      }));
+    } catch (err) {
+      console.error('[CategoryModel:getAll error]:', err.message);
+      return [];
+    }
   },
 
-  // Get single category by ID
-  async getById(categoryId) {
-    const [rows] = await pool.query(
-      'SELECT * FROM categories WHERE category_id = ?',
-      [categoryId]
-    );
-    return rows[0] || null;
+  // Get category by ID
+  async getById(id) {
+    if (!supabase) return null;
+
+    try {
+      const { data, error } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+      return data
+        ? {
+            id: data.id,
+            category_id: data.id,
+            name: data.name,
+            category_name: data.name,
+          }
+        : null;
+    } catch (err) {
+      console.error('[CategoryModel:getById error]:', err.message);
+      return null;
+    }
+  },
+
+  // Create new category
+  async create({ name }) {
+    if (!supabase) throw new Error('Supabase client not initialized');
+
+    const { data, error } = await supabase
+      .from('categories')
+      .insert([{ name: name.trim() }])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return {
+      id: data.id,
+      category_id: data.id,
+      name: data.name,
+      category_name: data.name,
+    };
   },
 };
 
 module.exports = CategoryModel;
-

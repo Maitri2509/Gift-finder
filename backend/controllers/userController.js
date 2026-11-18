@@ -1,25 +1,20 @@
 const UserModel = require('../models/userModel');
 const UserGiftModel = require('../models/userGiftModel');
 
-// Controller for user operations
 const UserController = {
-  // Register or retrieve user by email
+  // Register or create user session
   async registerOrFind(req, res) {
     try {
-      const { name, email } = req.body;
+      const { name, occasion, relationship, budget } = req.body;
 
       if (!name || !name.trim()) {
         return res.status(400).json({ success: false, message: 'Name is required' });
       }
 
-      if (!email || !email.trim() || !email.includes('@')) {
-        return res.status(400).json({ success: false, message: 'A valid email address is required' });
-      }
-
-      const user = await UserModel.createOrFind({ name, email });
+      const user = await UserModel.create({ name, occasion, relationship, budget });
       return res.status(200).json({
         success: true,
-        message: 'User details saved successfully',
+        message: 'User session created successfully in Supabase',
         data: user,
       });
     } catch (error) {
@@ -70,4 +65,3 @@ const UserController = {
 };
 
 module.exports = UserController;
-

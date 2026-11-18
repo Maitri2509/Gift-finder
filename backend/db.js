@@ -1,3 +1,4 @@
-// Forwarding to MySQL database configuration
-const pool = require('./config/db');
-module.exports = pool;
+// Forwarding to Supabase database client
+const supabase = require('./config/supabase');
+
+module.exports = supabase;

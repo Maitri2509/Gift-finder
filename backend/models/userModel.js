@@ -1,67 +1,91 @@
-const pool = require('../config/db');
+const supabase = require('../config/supabase');
 
-// Model for 'users' table
+function parseBudgetToNumeric(val) {
+  if (val == null || val === '') return null;
+  if (typeof val === 'number') return isNaN(val) ? null : val;
+  const str = String(val).trim();
+  if (str.includes('Under') || (str.includes('1,000') && !str.includes('2,500'))) return 1000;
+  if (str.includes('2,500')) return 2500;
+  if (str.includes('5,000+')) return 10000;
+  if (str.includes('5,000')) return 5000;
+  const cleaned = str.replace(/[^\d.]/g, '');
+  return cleaned ? Number(cleaned) : null;
+}
+
 const UserModel = {
-  // Create or retrieve existing user by email
-  async createOrFind({ name, email }) {
-    // Check if user already exists
-    const [existing] = await pool.query(
-      'SELECT * FROM users WHERE email = ?',
-      [email.trim().toLowerCase()]
-    );
-
-    if (existing.length > 0) {
-      // If name was updated, update user name
-      if (name && name.trim() !== existing[0].name) {
-        await pool.query(
-          'UPDATE users SET name = ? WHERE user_id = ?',
-          [name.trim(), existing[0].user_id]
-        );
-        existing[0].name = name.trim();
-      }
-      return existing[0];
+  // Create a new user record in Supabase
+  async create({ name, occasion, relationship, budget }) {
+    if (!supabase) {
+      console.warn('[UserModel] Supabase client not initialized, using local session user.');
+      return { id: 1, user_id: 1, name: name || 'Guest User', occasion, relationship, budget };
     }
 
-    // Insert new user
-    const [result] = await pool.query(
-      'INSERT INTO users (name, email) VALUES (?, ?)',
-      [name.trim(), email.trim().toLowerCase()]
-    );
+    const payload = {
+      name: name ? name.trim() : 'Guest User',
+      occasion: occasion || null,
+      relationship: relationship || null,
+      budget: parseBudgetToNumeric(budget),
+    };
+
+    const { data, error } = await supabase
+      .from('users')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('[UserModel:create error]:', error.message);
+      throw error;
+    }
 
     return {
-      user_id: result.insertId,
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      created_at: new Date(),
+      ...data,
+      user_id: data.id,
     };
   },
 
+  // Create or find user (compatible with older caller formats)
+  async createOrFind({ name, occasion, relationship, budget }) {
+    return this.create({ name, occasion, relationship, budget });
+  },
+
   // Get user by ID
-  async getById(userId) {
-    const [rows] = await pool.query(
-      'SELECT * FROM users WHERE user_id = ?',
-      [userId]
-    );
-    return rows[0] || null;
+  async getById(id) {
+    if (!supabase) return null;
+
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      console.error('[UserModel:getById error]:', error.message);
+      return null;
+    }
+
+    return data ? { ...data, user_id: data.id } : null;
   },
 
-  // Get user by Email
-  async getByEmail(email) {
-    const [rows] = await pool.query(
-      'SELECT * FROM users WHERE email = ?',
-      [email.trim().toLowerCase()]
-    );
-    return rows[0] || null;
-  },
-
-  // List all users
+  // Get all users
   async getAll() {
-    const [rows] = await pool.query(
-      'SELECT user_id, name, email, created_at FROM users ORDER BY user_id DESC'
-    );
-    return rows;
+    if (!supabase) return [];
+
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .order('id', { ascending: false });
+
+    if (error) {
+      console.error('[UserModel:getAll error]:', error.message);
+      return [];
+    }
+
+    return (data || []).map((u) => ({
+      ...u,
+      user_id: u.id,
+    }));
   },
 };
 
 module.exports = UserModel;
-

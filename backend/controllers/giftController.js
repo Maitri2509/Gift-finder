@@ -6,8 +6,8 @@ const GiftController = {
   // Get all gifts with optional filtering
   async getAllGifts(req, res) {
     try {
-      const { occasion, relationship, gender, budget, minPrice, maxPrice, search } = req.query;
-      const gifts = await GiftModel.getAll({ occasion, relationship, gender, budget, minPrice, maxPrice, search });
+      const { minPrice, maxPrice, search } = req.query;
+      const gifts = await GiftModel.getAll({ minPrice, maxPrice, search });
       return res.status(200).json({ success: true, count: gifts.length, data: gifts });
     } catch (error) {
       console.error('[GiftController:getAllGifts]', error);
@@ -35,30 +35,27 @@ const GiftController = {
   // Add new gift
   async createGift(req, res) {
     try {
-      const { gift_name, description, price, image_url, occasion, relationship, gender, budget, category_ids } = req.body;
+      const { name, gift_name, price, image, image_url, category_ids } = req.body;
+      const finalName = name || gift_name;
+      const finalImage = image || image_url;
 
-      if (!gift_name || !description || price == null || !image_url || !occasion || !relationship || !budget) {
+      if (!finalName || price == null || !finalImage) {
         return res.status(400).json({
           success: false,
-          message: 'All fields (gift_name, description, price, image_url, occasion, relationship, budget) are required',
+          message: 'name, price, and image are required',
         });
       }
 
       const newGift = await GiftModel.create({
-        gift_name,
-        description,
+        name: finalName,
         price,
-        image_url,
-        occasion,
-        relationship,
-        gender,
-        budget,
+        image: finalImage,
         category_ids,
       });
 
       return res.status(201).json({
         success: true,
-        message: 'Gift created successfully',
+        message: 'Gift created successfully in Supabase',
         data: newGift,
       });
     } catch (error) {
@@ -88,10 +85,10 @@ const GiftController = {
     }
   },
 
-  // Find gifts based on user preferences and persist recommendation session
+  // Find gifts based on user preferences and persist recommendation session in Supabase
   async recommendGifts(req, res) {
     try {
-      const { name, email, occasion, relationship, gender, budget, notes } = req.body;
+      const { name, occasion, relationship, gender, budget, notes } = req.body;
 
       // 1. Validation
       if (!occasion || !relationship || !gender || !budget) {
@@ -101,17 +98,21 @@ const GiftController = {
         });
       }
 
-      // 2. Save user if name and email provided
+      // 2. Save user session into Supabase 'users' table
       let user = null;
-      if (email && email.trim()) {
-        user = await UserModel.createOrFind({
+      try {
+        user = await UserModel.create({
           name: name ? name.trim() : 'Guest User',
-          email: email.trim(),
+          occasion,
+          relationship,
+          budget,
         });
-        console.log(`[Form Submitted] Saved to MySQL -> Name: ${user.name}, Email: ${user.email}, user_id: ${user.user_id}`);
+        console.log(`[Form Submitted] User record created in Supabase: ID ${user.id}, Name: ${user.name}`);
+      } catch (userErr) {
+        console.warn('[GiftController] Could not persist user to Supabase:', userErr.message);
       }
 
-      // 3. Query MySQL database for matching recommendations
+      // 3. Query Supabase database for matching recommendations
       const recommendedGifts = await GiftModel.recommend({
         occasion,
         relationship,
@@ -120,23 +121,18 @@ const GiftController = {
         notes,
       });
 
-      // 4. Save recommendations into user_gifts table if user exists
-      if (user && user.user_id && recommendedGifts.length > 0) {
-        const giftIds = recommendedGifts.map((g) => g.gift_id);
+      // 4. Save recommendations into Supabase 'user_gifts' table if user was created
+      if (user && user.id && recommendedGifts.length > 0) {
+        const giftIds = recommendedGifts.map((g) => g.id || g.gift_id);
         await UserGiftModel.saveRecommendations({
-          user_id: user.user_id,
+          user_id: user.id,
           gift_ids: giftIds,
-          occasion,
-          relationship,
-          gender,
-          budget,
-          user_notes: notes,
         });
       }
 
       return res.status(200).json({
         success: true,
-        message: 'Gifts recommended successfully',
+        message: 'Gifts recommended successfully from Supabase',
         user,
         count: recommendedGifts.length,
         data: recommendedGifts,
@@ -153,4 +149,3 @@ const GiftController = {
 };
 
 module.exports = GiftController;
-

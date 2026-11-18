@@ -78,6 +78,8 @@ const STEPS = [
   },
 ]
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+
 const emptyForm = {
   name: '',
   email: '',
@@ -133,7 +135,15 @@ export function GiftIdeas() {
           {IDEAS.map((idea) => (
             <article key={idea.title} className="idea-card">
               <div className="idea-media">
-                <img src={idea.image} alt="" />
+                <img
+                  src={idea.image}
+                  alt={idea.title}
+                  onError={(e) => {
+                    e.currentTarget.onerror = null
+                    e.currentTarget.src =
+                      'https://images.unsplash.com/photo-1513885535751-8b9238bd345a?auto=format&fit=crop&w=800&q=80'
+                  }}
+                />
               </div>
               <div className="idea-body">
                 <p className="idea-meta">{idea.meta}</p>
@@ -224,8 +234,8 @@ export function FindGiftForm({ onComplete }) {
     setLoading(true)
 
     try {
-      // Connect to the Node.js/Express MySQL backend
-      const response = await fetch('http://localhost:5000/api/gifts/recommend', {
+      // Connect to the Node.js/Express Supabase backend
+      const response = await fetch(`${API_BASE}/api/gifts/recommend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -244,21 +254,23 @@ export function FindGiftForm({ onComplete }) {
       if (resData.success && Array.isArray(resData.data) && resData.data.length > 0) {
         // Normalize database records to match the Results component expectations
         const dbGifts = resData.data.map((item) => ({
-          id: item.gift_id,
-          gift_id: item.gift_id,
-          title: item.gift_name,
-          gift_name: item.gift_name,
+          id: item.id || item.gift_id,
+          gift_id: item.id || item.gift_id,
+          title: item.name || item.gift_name || item.title,
+          gift_name: item.name || item.gift_name || item.title,
           price:
             typeof item.price === 'number'
               ? `₹${Number(item.price).toLocaleString('en-IN')}`
               : String(item.price).startsWith('₹')
               ? item.price
               : `₹${Number(item.price).toLocaleString('en-IN')}`,
-          why: item.description,
-          description: item.description,
-          image: item.image_url,
-          image_url: item.image_url,
-          tags: item.categories
+          why: item.why || item.description || `${item.name || item.gift_name} - Curated gift idea`,
+          description: item.description || item.why || `${item.name || item.gift_name} - Handpicked gift`,
+          image: item.image || item.image_url,
+          image_url: item.image || item.image_url,
+          tags: Array.isArray(item.tags)
+            ? item.tags
+            : item.categories
             ? item.categories.split(', ')
             : ['Curated', item.occasion ? item.occasion.split(',')[0].trim() : 'Gift'],
         }))
@@ -420,7 +432,7 @@ export function FeedbackSection() {
   const [reviews, setReviews] = useState([])
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/feedback')
+    fetch(`${API_BASE}/api/feedback`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.data)) {
@@ -436,7 +448,7 @@ export function FeedbackSection() {
 
     setLoading(true)
     try {
-      const res = await fetch('http://localhost:5000/api/feedback', {
+      const res = await fetch(`${API_BASE}/api/feedback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -492,7 +504,7 @@ export function FeedbackSection() {
           {submitted ? (
             <div className="form-success" role="status">
               <h3>Thank you!</h3>
-              <p>Your feedback and rating have been recorded in the MySQL database.</p>
+              <p>Your feedback and rating have been recorded in the database.</p>
               <button
                 type="button"
                 className="btn-primary"
@@ -564,7 +576,7 @@ export function FeedbackSection() {
               </label>
 
               <button type="submit" className="btn-primary form-submit" disabled={loading}>
-                <span>{loading ? 'Submitting to MySQL...' : 'Submit Feedback'}</span>
+                <span>{loading ? 'Submitting...' : 'Submit Feedback'}</span>
                 <span aria-hidden="true">→</span>
               </button>
             </>
@@ -610,7 +622,7 @@ export function Contact() {
             const message = target.message?.value
 
             try {
-              await fetch('http://localhost:5000/api/feedback', {
+              await fetch(`${API_BASE}/api/feedback`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
